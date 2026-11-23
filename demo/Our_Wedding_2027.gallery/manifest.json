@@ -1,12 +1,12 @@
 {
   "schema_version": "0.1.0",
   "id": "wedding-invitation-2027-05-22",
-  "title": "민준 · 서연 결혼합니다",
-  "subtitle": "함께 걷는 첫 번째 계절에 소중한 분들을 초대합니다",
-  "author": "Minjun & Seoyeon",
+  "title": "김민준 ♥ 이지은",
+  "subtitle": "2027년 5월 22일 (토) 오후 12시 30분 · 더컨벤션 서울",
+  "author": "Memoria",
   "created_at": "2026-11-23T04:18:00Z",
   "theme": {
-    "preset": "atelier_poster",
+    "preset": "memoria_pastel",
     "display_font": "\"Iowan Old Style\", \"AppleMyungjo\", \"Noto Serif KR\", Georgia, serif",
     "body_font": "\"Pretendard\", -apple-system, BlinkMacSystemFont, \"Apple SD Gothic Neo\", sans-serif",
     "lighting_transition_ms": 900
@@ -25,14 +25,14 @@
         "vignette": 0.0
       },
       "type": "cover",
-      "title": "민준 · 서연",
-      "subtitle": "함께 걷는 첫 번째 계절에 소중한 분들을 초대합니다.",
-      "date_label": "2027. 05. 22 SAT · 12:30 PM",
+      "title": "Memoria",
+      "subtitle": "Our Special Day",
+      "date_label": "소중한 순간을, 더 특별하게.",
       "hero_image": {
         "src": "images/01_cover_couple.jpg",
         "alt": "Bride and groom holding botanical wedding bouquet in warm sunlight"
       },
-      "enter_label": "초대장 열기"
+      "enter_label": "갤러리 보기  ›"
     },
     {
       "id": "wedding-greeting",

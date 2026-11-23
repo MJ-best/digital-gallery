@@ -1,6 +1,6 @@
 name: DigitalGallery
 options:
-  bundleIdPrefix: com.digitalgallery
+  bundleIdPrefix: com.mjbest
   deploymentTarget:
     macOS: "14.0"
     iOS: "17.0"
@@ -34,7 +34,7 @@ targets:
         product: GalleryBridge
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.digitalgallery.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.mjbest.digitalgallery
         ARCHS: arm64
         CODE_SIGN_ENTITLEMENTS: Entitlements/DigitalGallery-macOS.entitlements
         ENABLE_HARDENED_RUNTIME: YES
@@ -61,7 +61,7 @@ targets:
         product: GalleryBridge
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.digitalgallery.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.mjbest.digitalgallery
         ARCHS: arm64
         CODE_SIGN_ENTITLEMENTS: Entitlements/DigitalGallery-iOS.entitlements
         TARGETED_DEVICE_FAMILY: "1,2"

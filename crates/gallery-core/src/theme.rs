@@ -1,10 +1,12 @@
 use serde::{Deserialize, Serialize};
 
-/// Visual theme preset for the exported exhibition, synthesizing Korean & global
-/// editorial mobile invitation designs with Toss Simplicity principles.
+/// Visual theme preset for the exported exhibition.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ThemePreset {
+    /// Bright, lovable pastel sky & lavender UI with peeking cloud mascot,
+    /// scalloped cloud cover wave, and warm sunset pill CTA ("Memoria" style).
+    MemoriaPastel,
     /// Warm Paper <-> Dark Room editorial magazine (Riley & Grey / Magazine style).
     EditorialGallery,
     /// Darkroom film archive with amber accents & monospace EXIF stamps (Midnight Film style).
@@ -17,13 +19,14 @@ pub enum ThemePreset {
 
 impl Default for ThemePreset {
     fn default() -> Self {
-        Self::EditorialGallery
+        Self::MemoriaPastel
     }
 }
 
 impl ThemePreset {
     pub fn as_str(&self) -> &'static str {
         match self {
+            ThemePreset::MemoriaPastel => "memoria_pastel",
             ThemePreset::EditorialGallery => "editorial_gallery",
             ThemePreset::MidnightFilm => "midnight_film",
             ThemePreset::TossClean => "toss_clean",
@@ -33,6 +36,7 @@ impl ThemePreset {
 
     pub fn from_preset_str(s: &str) -> Option<Self> {
         match s {
+            "memoria_pastel" => Some(Self::MemoriaPastel),
             "editorial_gallery" => Some(Self::EditorialGallery),
             "midnight_film" => Some(Self::MidnightFilm),
             "toss_clean" => Some(Self::TossClean),
@@ -69,7 +73,7 @@ fn default_transition_ms() -> u32 {
 impl Default for ThemeConfig {
     fn default() -> Self {
         Self {
-            preset: ThemePreset::EditorialGallery,
+            preset: ThemePreset::MemoriaPastel,
             display_font: default_display_font(),
             body_font: default_body_font(),
             lighting_transition_ms: default_transition_ms(),

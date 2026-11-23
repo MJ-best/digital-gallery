@@ -59,9 +59,9 @@ struct DigitalGalleryApp: App {
             let finalImage = NSImage(size: bounds.size)
             finalImage.lockFocus()
             baseRep.draw(in: bounds)
-            if let webImage, let webView = findWebView(in: rootView) {
+            if let webImage, let webView = findWebView(in: rootView), !CommandLine.arguments.contains("--share-sheet") {
                 let targetRect = webView.convert(webView.bounds, to: rootView)
-                let clipPath = NSBezierPath(roundedRect: targetRect, xRadius: 34, yRadius: 34)
+                let clipPath = NSBezierPath(roundedRect: targetRect, xRadius: 42, yRadius: 42)
                 NSGraphicsContext.saveGraphicsState()
                 clipPath.addClip()
                 webImage.draw(

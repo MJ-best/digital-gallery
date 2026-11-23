@@ -20,31 +20,33 @@ public enum LightingPreset: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
-/// Exhibition design theme presets synthesized from Korean & global editorial
-/// mobile invitations following Toss Simplicity principles.
+/// Exhibition design theme presets.
 public enum ExhibitionThemePreset: String, CaseIterable, Identifiable, Sendable {
-    case editorialGallery = "editorial_gallery"
+    case memoriaPastel = "memoria_pastel"
     case tossClean = "toss_clean"
-    case midnightFilm = "midnight_film"
+    case editorialGallery = "editorial_gallery"
     case atelierPoster = "atelier_poster"
+    case midnightFilm = "midnight_film"
 
     public var id: String { rawValue }
 
     public var displayName: String {
         switch self {
-        case .editorialGallery: return "에디토리얼 매거진"
+        case .memoriaPastel: return "메모리아 파스텔"
         case .tossClean: return "토스 미니멀"
-        case .midnightFilm: return "미드나잇 필름"
+        case .editorialGallery: return "에디토리얼 매거진"
         case .atelierPoster: return "아틀리에 포스터"
+        case .midnightFilm: return "미드나잇 필름"
         }
     }
 
     public var subtitle: String {
         switch self {
-        case .editorialGallery: return "Riley & Grey · 매거진형"
-        case .tossClean: return "Toss Simplicity · 심플 포스터"
-        case .midnightFilm: return "Midnight Film · 암실 아카이브"
-        case .atelierPoster: return "Paperless Post · 전시 포스터"
+        case .memoriaPastel: return "구름 마스코트 · 파스텔 웨딩/추억"
+        case .tossClean: return "심플 카드 · 스카이 블루"
+        case .editorialGallery: return "화보 매거진 · 세리프"
+        case .atelierPoster: return "전시 포스터 · 클래식"
+        case .midnightFilm: return "다크룸 필름 · 앰버"
         }
     }
 }

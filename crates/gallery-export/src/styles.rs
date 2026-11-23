@@ -652,9 +652,162 @@ img, video {{
 }}
 
 /* =========================================================
-   7. CURATED DESIGN PRESETS (Toss Simplicity + Editorial)
+   7. CURATED DESIGN PRESETS (Memoria Pastel + Toss + Editorial)
    Zero-reload switching via `body[data-theme="..."]`
    ========================================================= */
+
+/* Preset A: Memoria Pastel Blue (Pure Minimal Typography — Zero Illustrations) */
+body[data-theme="memoria_pastel"] {{
+  --bg: #F4F9FF !important;
+  --surface: #FFFFFF !important;
+  --fg: #111827 !important;
+  --muted: #6E7D91 !important;
+  --accent: #4A9EFF !important;
+  --border: rgba(74, 158, 255, 0.14) !important;
+  --vignette: 0 !important;
+  --font-display: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  background-color: #F4F9FF !important;
+  color: #111827 !important;
+}}
+
+body[data-theme="memoria_pastel"] .scene-cover {{
+  position: relative;
+  height: 100svh;
+  min-height: 100svh;
+  padding: 48px 28px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, #DCEEFF 0%, #F2F8FF 48%, #FFFFFF 100%);
+}}
+
+body[data-theme="memoria_pastel"] .cover-backdrop {{
+  display: none;
+}}
+
+body[data-theme="memoria_pastel"] .scene-cover .cover-content {{
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  color: #111827 !important;
+  max-width: 340px;
+  padding: 0;
+  text-align: center;
+}}
+
+body[data-theme="memoria_pastel"] .cover-date {{
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: #4A9EFF;
+  opacity: 1;
+  margin-bottom: 18px;
+}}
+
+body[data-theme="memoria_pastel"] .cover-title {{
+  font-weight: 800;
+  font-size: clamp(2.3rem, 9vw, 3.0rem);
+  letter-spacing: -0.035em;
+  color: #111827;
+  margin-bottom: 12px;
+}}
+
+body[data-theme="memoria_pastel"] .cover-subtitle {{
+  color: #6E7D91;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  opacity: 1;
+  margin-bottom: 40px;
+}}
+
+body[data-theme="memoria_pastel"] .enter-btn {{
+  border: 1px solid rgba(74, 158, 255, 0.35);
+  background: rgba(255, 255, 255, 0.85);
+  color: #2B7DE9;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 12px 28px;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(74, 158, 255, 0.12);
+}}
+
+body[data-theme="memoria_pastel"] .cover-hint {{
+  color: #93A1B4;
+  font-size: 11px;
+  opacity: 1;
+  margin-top: 20px;
+}}
+
+body[data-theme="memoria_pastel"] .display-title {{
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}}
+
+body[data-theme="memoria_pastel"] .chapter-label {{
+  display: inline-block;
+  background: #E8F3FF;
+  color: #3687E8;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 5px 12px;
+  border-radius: 999px;
+}}
+
+body[data-theme="memoria_pastel"] .spotlight-frame,
+body[data-theme="memoria_pastel"] .track-card-frame,
+body[data-theme="memoria_pastel"] .video-frame {{
+  background: #FFFFFF;
+  border-radius: 26px;
+  padding: 12px;
+  border: 1px solid rgba(74, 158, 255, 0.14);
+  box-shadow: 0 16px 38px rgba(55, 110, 180, 0.08);
+}}
+
+body[data-theme="memoria_pastel"] .spotlight-frame img,
+body[data-theme="memoria_pastel"] .track-card-frame img {{
+  border-radius: 18px;
+}}
+
+body[data-theme="memoria_pastel"] .audio-toggle {{
+  background: rgba(255, 255, 255, 0.88);
+  color: #111827;
+  border: 1px solid rgba(74, 158, 255, 0.20);
+  box-shadow: 0 6px 18px rgba(25, 31, 40, 0.07);
+}}
+
+body[data-theme="memoria_pastel"] .scene-ending {{
+  position: relative;
+  padding-bottom: 140px;
+  background: linear-gradient(180deg, #F3F8FF 0%, #FFFFFF 100%);
+}}
+
+body[data-theme="memoria_pastel"] .replay-btn {{
+  border: none;
+  background: linear-gradient(135deg, #6EC1FF 0%, #4A9EFF 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  padding: 14px 30px;
+  box-shadow: 0 10px 24px rgba(74, 158, 255, 0.28);
+}}
+
+body[data-theme="memoria_pastel"] .memoria-ending-wave {{
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}}
+
+body[data-theme="memoria_pastel"] .memoria-ending-wave svg {{
+  display: block;
+  width: 100%;
+  height: 110px;
+}}
 
 /* Preset B: Toss Clean (Simplicity · Bold Sans · 20px Soft Cards) */
 body[data-theme="toss_clean"] {{
