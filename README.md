@@ -5,6 +5,23 @@
 Apple 생태계(macOS · iPadOS)에 최적화된 개인용 디지털 전시관 제작 도구입니다.  
 **Rust Core + UniFFI + SwiftUI + iCloud Drive (`.gallery` Document Package)** 아키텍처로 설계되어 있으며, 스크롤 동선·조명 변화·앰비언트 사운드·캡션이 어우러진 독립형 HTML 전시관을 생성합니다.
 
+## Preview Screenshots (App Store 2880×1800)
+
+![Digital Gallery — Travel Exhibition](apps/xcode/AppStoreScreenshots/AppStore_01_Exhibition.png)
+
+| 4가지 디자인 시안 실시간 전환 | 조명 암전 · 사운드 · 단일 HTML 공유 |
+| :---: | :---: |
+| ![4 Curated Themes](apps/xcode/AppStoreScreenshots/AppStore_02_Themes.png) | ![Lighting and Ambient Audio](apps/xcode/AppStoreScreenshots/AppStore_03_Atmosphere.png) |
+
+## App Store Release Kit
+
+App Store Connect 제출에 필요한 프로젝트·메타데이터·스크린샷 자료가 저장소에 포함되어 있습니다.
+
+- **스크린샷 (2880×1800, 16:10)**: [`apps/xcode/AppStoreScreenshots/`](apps/xcode/AppStoreScreenshots/)
+- **App Store Connect 메타데이터 · 심사 노트 · 배포 가이드**: [`docs/app-store-release.md`](docs/app-store-release.md)
+- **Xcode 프로젝트 & 설정**: [`apps/xcode/project.yml`](apps/xcode/project.yml) · [`Info.plist`](apps/xcode/Resources/Info.plist) · [`PrivacyInfo.xcprivacy`](apps/xcode/Resources/PrivacyInfo.xcprivacy) · [`AppIcon`](apps/xcode/Resources/Assets.xcassets/AppIcon.appiconset/)
+- **아카이브 & 업로드 스크립트**: [`scripts/archive-appstore.sh`](scripts/archive-appstore.sh) · [`apps/xcode/ExportOptions.plist`](apps/xcode/ExportOptions.plist)
+
 ## Features
 
 - **EXIF 자동 큐레이션 (`gallery-media`)**: 폴더 내 사진/영상의 촬영 시각과 가로·세로 비율을 분석해 챕터를 나누고 전시 씬을 자동 제안
