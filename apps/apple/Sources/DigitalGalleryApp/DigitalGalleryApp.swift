@@ -16,8 +16,12 @@ struct DigitalGalleryApp: App {
 
     var body: some Scene {
         WindowGroup("Digital Gallery") {
+            #if os(macOS)
             ContentView()
                 .frame(minWidth: 1140, minHeight: 820)
+            #else
+            ContentView()
+            #endif
         }
     }
 

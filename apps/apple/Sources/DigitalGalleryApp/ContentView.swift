@@ -13,10 +13,13 @@ enum PreviewViewport: String, CaseIterable, Identifiable {
 }
 
 struct ContentView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var store = GalleryStore()
     @State private var webController = WebPreviewController()
     @State private var viewport: PreviewViewport = .mobile
     @State private var showInspector = true
+    @State private var showMobileEditorSheet = false
+    @State private var exportedShareURL: URL?
     @State private var pickedPhotoItem: PhotosPickerItem?
 
     // Live-bound Inspector fields (debounced zero-reload updates)
@@ -55,12 +58,21 @@ struct ContentView: View {
                 #endif
 
                 Button {
-                    openDemoPackage()
+                    openDemoPackage(named: "Our_Wedding_2027")
                 } label: {
-                    Label("데모", systemImage: "sparkles")
+                    Label("청첩장 데모", systemImage: "sparkles")
                 }
+
+                #if os(iOS)
+                Button {
+                    openDemoPackage(named: "Rainy_Fukuoka")
+                } label: {
+                    Label("여행전 데모", systemImage: "airplane")
+                }
+                #endif
             }
 
+            #if os(macOS)
             ToolbarItem(placement: .principal) {
                 Picker("Viewport", selection: $viewport) {
                     ForEach(PreviewViewport.allCases) { mode in
@@ -70,6 +82,7 @@ struct ContentView: View {
                 .pickerStyle(.segmented)
                 .frame(width: 170)
             }
+            #endif
 
             ToolbarItemGroup(placement: .primaryAction) {
                 Button {
@@ -114,13 +127,41 @@ struct ContentView: View {
                     Label("공유 / 내보내기", systemImage: "square.and.arrow.up")
                 }
                 .disabled(store.manifest == nil)
+                #else
+                if let shareURL = exportedShareURL {
+                    ShareLink(item: shareURL) {
+                        Label("공유", systemImage: "square.and.arrow.up")
+                    }
+                } else {
+                    Button {
+                        prepareIOSSingleFileShare()
+                    } label: {
+                        Label("HTML 생성", systemImage: "square.and.arrow.up")
+                    }
+                    .disabled(store.manifest == nil)
+                }
                 #endif
 
                 Button {
-                    showInspector.toggle()
+                    if horizontalSizeClass == .compact {
+                        showMobileEditorSheet.toggle()
+                    } else {
+                        showInspector.toggle()
+                    }
                 } label: {
-                    Label("Inspector", systemImage: "sidebar.right")
+                    Label("편집", systemImage: "slider.horizontal.3")
                 }
+            }
+        }
+        .sheet(isPresented: $showMobileEditorSheet) {
+            NavigationStack {
+                inspectorView
+                    .navigationTitle("전시 편집")
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("완료") { showMobileEditorSheet = false }
+                        }
+                    }
             }
         }
         .onAppear {
@@ -234,6 +275,7 @@ struct ContentView: View {
 
             if store.previewHTMLURL != nil {
                 Group {
+                    #if os(macOS)
                     if viewport == .mobile {
                         ExhibitionWebView(
                             htmlURL: store.previewHTMLURL,
@@ -257,6 +299,15 @@ struct ContentView: View {
                             controller: webController
                         )
                     }
+                    #else
+                    ExhibitionWebView(
+                        htmlURL: store.previewHTMLURL,
+                        readAccessURL: store.previewDirectoryURL,
+                        revision: store.previewRevision,
+                        controller: webController
+                    )
+                    .ignoresSafeArea(edges: .bottom)
+                    #endif
                 }
             } else {
                 ContentUnavailableView(
@@ -458,18 +509,42 @@ struct ContentView: View {
     }
 
     // MARK: - Actions
-    private func openDemoPackage() {
-        let candidates = [
+    private func openDemoPackage(named name: String = "Our_Wedding_2027") {
+        exportedShareURL = nil
+        var candidates: [URL] = []
+        if let bundled = Bundle.main.url(forResource: name, withExtension: "gallery") {
+            candidates.append(bundled)
+        }
+        if let bundledFallback = Bundle.main.url(forResource: "Rainy_Fukuoka", withExtension: "gallery") {
+            candidates.append(bundledFallback)
+        }
+        candidates.append(
             URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-                .appendingPathComponent("demo/Quiet_Autumn.gallery"),
-            URL(fileURLWithPath: "/Users/mj/.gemini/antigravity/scratch/digital-gallery/demo/Quiet_Autumn.gallery"),
-        ]
+                .appendingPathComponent("demo/\(name).gallery")
+        )
+        candidates.append(
+            URL(fileURLWithPath: "/Users/mj/.gemini/antigravity/scratch/digital-gallery/demo/\(name).gallery")
+        )
+        candidates.append(
+            URL(fileURLWithPath: "/Users/mj/.gemini/antigravity/scratch/digital-gallery/demo/Quiet_Autumn.gallery")
+        )
+
         if let found = candidates.first(where: { FileManager.default.fileExists(atPath: $0.path) }) {
             store.loadPackage(at: found)
         } else {
-            store.errorMessage = "데모 패키지를 찾지 못했습니다. 먼저 `cargo run -- demo --out ./demo`를 실행하세요."
+            store.errorMessage = "데모 패키지를 찾지 못했습니다."
         }
     }
+
+    #if os(iOS)
+    private func prepareIOSSingleFileShare() {
+        let outDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("digital-gallery-share", isDirectory: true)
+        if let result = store.exportToFolder(outDir, singleFile: true) {
+            exportedShareURL = URL(fileURLWithPath: result.outputHtml)
+        }
+    }
+    #endif
 
     #if os(macOS)
     private func pickFolderToScan() {

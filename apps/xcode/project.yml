@@ -50,12 +50,19 @@ targets:
       - path: ../apple/Sources/DigitalGalleryApp
       - path: Resources/Assets.xcassets
       - path: Resources/PrivacyInfo.xcprivacy
+      - path: ../../demo/Our_Wedding_2027.gallery
+        buildPhase: resources
+        type: folder
+      - path: ../../demo/Rainy_Fukuoka.gallery
+        buildPhase: resources
+        type: folder
     dependencies:
       - package: DigitalGalleryApple
         product: GalleryBridge
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.digitalgallery.app
+        ARCHS: arm64
         CODE_SIGN_ENTITLEMENTS: Entitlements/DigitalGallery-iOS.entitlements
         TARGETED_DEVICE_FAMILY: "1,2"
         SUPPORTS_MACCATALYST: NO

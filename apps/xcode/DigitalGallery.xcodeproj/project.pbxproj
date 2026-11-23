@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		121B75697112881195F7AA70 /* Our_Wedding_2027.gallery in Resources */ = {isa = PBXBuildFile; fileRef = 0F921E1AA8AD7EC77615AC43 /* Our_Wedding_2027.gallery */; };
 		213938BABD1510C67BE7322B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BCDF3F37FEF8C949291B73 /* ContentView.swift */; };
 		246BC226188AE6CACF1698DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */; };
 		28DD18C8D7A9704C615F55D0 /* ExhibitionWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */; };
@@ -17,13 +18,16 @@
 		9AC15ECE15AE6D5B7EDA5496 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BCDF3F37FEF8C949291B73 /* ContentView.swift */; };
 		B061E95B0B56B6738D2CE6E8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */; };
 		E6483AE54D78FC656081A994 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */; };
+		E7DC901E275AED04DD8ABB1C /* Rainy_Fukuoka.gallery in Resources */ = {isa = PBXBuildFile; fileRef = 3A742BD18BCC825C0A2D5294 /* Rainy_Fukuoka.gallery */; };
 		F2211D244090CB2FED9ADBAA /* DigitalGalleryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787D2E408D603A88F8A84C86 /* DigitalGalleryApp.swift */; };
 		F4A9CF7200402A3E4831D209 /* GalleryBridge in Frameworks */ = {isa = PBXBuildFile; productRef = 5D51EA6340081C8F31AFCF67 /* GalleryBridge */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F921E1AA8AD7EC77615AC43 /* Our_Wedding_2027.gallery */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Our_Wedding_2027.gallery; path = ../../demo/Our_Wedding_2027.gallery; sourceTree = SOURCE_ROOT; };
 		17BCDF3F37FEF8C949291B73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionWebView.swift; sourceTree = "<group>"; };
+		3A742BD18BCC825C0A2D5294 /* Rainy_Fukuoka.gallery */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Rainy_Fukuoka.gallery; path = ../../demo/Rainy_Fukuoka.gallery; sourceTree = SOURCE_ROOT; };
 		4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		787D2E408D603A88F8A84C86 /* DigitalGalleryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalGalleryApp.swift; sourceTree = "<group>"; };
 		A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -52,6 +56,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		171E0798450A7BEA3BCED20C /* digital-gallery */ = {
+			isa = PBXGroup;
+			children = (
+				5B7154F3B780034A91EACB4D /* demo */,
+			);
+			name = "digital-gallery";
+			path = ../..;
+			sourceTree = "<group>";
+		};
 		188C7542B20CF1D476C050E8 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +80,15 @@
 				C03DC59C0B027CFD943E8F20 /* DigitalGallery-macOS.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5B7154F3B780034A91EACB4D /* demo */ = {
+			isa = PBXGroup;
+			children = (
+				0F921E1AA8AD7EC77615AC43 /* Our_Wedding_2027.gallery */,
+				3A742BD18BCC825C0A2D5294 /* Rainy_Fukuoka.gallery */,
+			);
+			path = demo;
 			sourceTree = "<group>";
 		};
 		5DE4BF08CD88BF151536A72D /* apps */ = {
@@ -109,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				5DE4BF08CD88BF151536A72D /* apps */,
+				171E0798450A7BEA3BCED20C /* digital-gallery */,
 				B00E2C7311B4739446BCFF62 /* Packages */,
 				9405D62375E11BFB4A0F5F89 /* Resources */,
 				23D0C1B3E776630B5F4B33EF /* Products */,
@@ -206,7 +229,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				48314C5D70E6560C02E2B9E9 /* Assets.xcassets in Resources */,
+				121B75697112881195F7AA70 /* Our_Wedding_2027.gallery in Resources */,
 				E6483AE54D78FC656081A994 /* PrivacyInfo.xcprivacy in Resources */,
+				E7DC901E275AED04DD8ABB1C /* Rainy_Fukuoka.gallery in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +273,7 @@
 		08EBF5F2919D878606681F70 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Entitlements/DigitalGallery-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -430,6 +456,7 @@
 		EA6EFB63198FC53054654E9B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Entitlements/DigitalGallery-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
