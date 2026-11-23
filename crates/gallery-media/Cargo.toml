@@ -1,0 +1,12 @@
+[package]
+name = "gallery-media"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+gallery-core = { path = "../gallery-core" }
+chrono.workspace = true
+thiserror.workspace = true
+kamadak-exif.workspace = true
+imagesize.workspace = true
+walkdir.workspace = true

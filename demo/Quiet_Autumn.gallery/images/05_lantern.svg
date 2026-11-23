@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1067" width="1600" height="1067">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#D99B52" stop-opacity="0.48"/>
+      <stop offset="100%" stop-color="#191514" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#191514"/>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <circle cx="800" cy="469" r="298" fill="none" stroke="#F5ECE0" stroke-opacity="0.22" stroke-width="1.5"/>
+  <line x1="400" y1="768" x2="1200" y2="768" stroke="#D99B52" stroke-opacity="0.6" stroke-width="1"/>
+  <text x="50%" y="853" text-anchor="middle" fill="#F5ECE0" font-family="Georgia, serif" font-size="38" letter-spacing="8" opacity="0.9">FIRST LANTERN</text>
+  <text x="50%" y="906" text-anchor="middle" fill="#F5ECE0" font-family="-apple-system, sans-serif" font-size="16" letter-spacing="4" opacity="0.58">18:35 PM · WALK III</text>
+</svg>

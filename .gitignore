@@ -1,0 +1,22 @@
+# Rust build outputs
+/target/
+
+# Xcode & SwiftPM build outputs
+/build/
+apps/apple/.build/
+apps/apple/.swiftpm/
+*.xcuserstate
+DerivedData/
+
+# Generated FFI binaries & bindings (regenerate via ./scripts/build-xcframework.sh)
+apps/apple/Libs/
+apps/apple/Sources/GalleryBridge/Generated/
+apps/apple/Sources/CGalleryFFI/
+
+# Generated demo exports
+demo/export/
+demo/scanned_export/
+demo/scanned_manifest.json
+
+# macOS metadata
+.DS_Store

@@ -1,0 +1,188 @@
+{
+  "schema_version": "0.1.0",
+  "id": "b036d544-a172-4251-829d-41c47384896e",
+  "title": "Quiet Autumn",
+  "subtitle": "Prototype 01 Demo Exhibition",
+  "author": "Digital Gallery",
+  "created_at": "2026-11-23T01:45:11.122878Z",
+  "theme": {
+    "preset": "editorial_gallery",
+    "display_font": "\"Iowan Old Style\", \"AppleMyungjo\", \"Noto Serif KR\", Georgia, serif",
+    "body_font": "-apple-system, BlinkMacSystemFont, \"Apple SD Gothic Neo\", \"Pretendard\", sans-serif",
+    "lighting_transition_ms": 900
+  },
+  "scenes": [
+    {
+      "id": "scene-46016bcc",
+      "atmosphere": {
+        "mood": {
+          "preset": "warm_paper"
+        },
+        "audio": {
+          "track": "audio/morning_pad.wav",
+          "volume": 0.45,
+          "fade_ms": 1400,
+          "loop_audio": true
+        },
+        "vignette": 0.0
+      },
+      "type": "cover",
+      "title": "Quiet Autumn",
+      "subtitle": "사진을 저장하는 것이 아니라, 발걸음과 빛으로 기억을 전시합니다.",
+      "date_label": "2026.11.01 — 2026.11.03",
+      "hero_image": {
+        "src": "images/01_cover.svg",
+        "alt": "Morning light",
+        "width": 1200,
+        "height": 1600
+      },
+      "enter_label": "전시 입장하기"
+    },
+    {
+      "id": "scene-68f903a8",
+      "atmosphere": {
+        "mood": {
+          "preset": "warm_paper"
+        },
+        "audio": {
+          "track": "audio/morning_pad.wav",
+          "volume": 0.45,
+          "fade_ms": 1400,
+          "loop_audio": true
+        },
+        "vignette": 0.0
+      },
+      "type": "spotlight",
+      "chapter_label": "Room 01 · Morning",
+      "title": "창가로 스며든 첫 번째 빛",
+      "note": "밝은 미색의 전시실에서 하루가 시작됩니다. 천천히 아래로 걸어 내려가 보세요.",
+      "media": {
+        "src": "images/02_window.svg",
+        "alt": "Still window",
+        "caption": "아직 아무도 깨지 않은 오전 열 시의 창가",
+        "meta": "2026.11.01 · 10:20 · 35mm",
+        "width": 1400,
+        "height": 1000
+      },
+      "framing": "museum_frame"
+    },
+    {
+      "id": "scene-fb3c5f11",
+      "atmosphere": {
+        "mood": {
+          "preset": "dark_room"
+        },
+        "audio": {
+          "track": "audio/night_drone.wav",
+          "volume": 0.5,
+          "fade_ms": 1600,
+          "loop_audio": true
+        },
+        "vignette": 0.35
+      },
+      "type": "horizontal_track",
+      "chapter_label": "Room 02 · Dusk Walk",
+      "intro": "조명이 어두워지고 사운드가 바뀝니다. 아래로 스크롤하면 전시 벽면을 따라 옆으로 걸어갑니다.",
+      "items": [
+        {
+          "src": "images/03_alley.svg",
+          "alt": "Afternoon shadow",
+          "caption": "골목 끝으로 길게 늘어진 오후의 그림자",
+          "meta": "15:40 · Walk I",
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "src": "images/04_bridge.svg",
+          "alt": "Quiet river",
+          "caption": "강물 위로 해가 식어가는 순간",
+          "meta": "17:12 · Walk II",
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "src": "images/05_lantern.svg",
+          "alt": "First lantern",
+          "caption": "하나둘 켜지기 시작한 저녁의 등불",
+          "meta": "18:35 · Walk III",
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "src": "images/06_rain.svg",
+          "alt": "After rain",
+          "caption": "가벼운 비가 지나간 뒤 젖은 돌길",
+          "meta": "20:05 · Walk IV",
+          "width": 1600,
+          "height": 1067
+        }
+      ],
+      "pace_multiplier": 1.15
+    },
+    {
+      "id": "scene-ac9040e8",
+      "atmosphere": {
+        "mood": {
+          "preset": "obsidian"
+        },
+        "audio": {
+          "track": "audio/night_drone.wav",
+          "volume": 0.5,
+          "fade_ms": 1600,
+          "loop_audio": true
+        },
+        "vignette": 0.55
+      },
+      "type": "pinned_story",
+      "chapter_label": "Room 03 · Nocturne",
+      "beats": [
+        {
+          "eyebrow": "01 / 03",
+          "heading": "발걸음을 멈추는 공간",
+          "body": "화면이 고정된 채, 스크롤의 호흡에 맞춰 캡션과 사진이 천천히 교차합니다.",
+          "media": {
+            "src": "images/07_night_01.svg",
+            "alt": "Silence I",
+            "width": 1200,
+            "height": 1500
+          }
+        },
+        {
+          "eyebrow": "02 / 03",
+          "heading": "어둠 속에서 또렷해지는 기억",
+          "body": "주변 조명을 낮추고 비네팅을 깊게 주면, 관람객의 시선은 오직 하나의 장면과 문장에 머뭅니다.",
+          "media": {
+            "src": "images/08_night_02.svg",
+            "alt": "Silence II",
+            "width": 1200,
+            "height": 1500
+          }
+        },
+        {
+          "eyebrow": "03 / 03",
+          "heading": "그날의 온도를 남기다",
+          "body": "폴더 속 평범한 사진들도 동선과 빛, 소리가 더해지면 하나의 전시가 됩니다."
+        }
+      ],
+      "pace_multiplier": 1.1
+    },
+    {
+      "id": "scene-a1f7cf6d",
+      "atmosphere": {
+        "mood": {
+          "preset": "warm_paper"
+        },
+        "vignette": 0.0
+      },
+      "type": "ending",
+      "title": "Quiet Autumn",
+      "message": "천천히 걸어주셔서 감사합니다.",
+      "credits": [
+        "Digital Gallery · Prototype 01",
+        "8 Artworks · 2 Ambient Soundscapes",
+        "Generated by Rust Core + Tera"
+      ],
+      "replay_label": "처음으로 돌아가기"
+    }
+  ]
+}

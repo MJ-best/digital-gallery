@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ subtitle | default(value=title) }}" />
+  <!-- Open Graph & KakaoTalk / iMessage Link Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ title }}" />
+  <meta property="og:description" content="{{ subtitle | default(value=title) }}" />
+  {% if og_image %}
+  <meta property="og:image" content="{{ og_image | safe }}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="{{ og_image | safe }}" />
+  {% else %}
+  <meta name="twitter:card" content="summary" />
+  {% endif %}
+  <meta name="twitter:title" content="{{ title }}" />
+  <meta name="twitter:description" content="{{ subtitle | default(value=title) }}" />
+  {% if inline_css %}
+  <style>{{ inline_css | safe }}</style>
+  {% else %}
+  <link rel="stylesheet" href="assets/gallery.css" />
+  {% endif %}
+</head>
+<body data-theme="{{ theme_preset }}">
+  <div id="vignette-layer" aria-hidden="true"></div>
+  <div id="progress-bar" aria-hidden="true"></div>
+
+  {% if has_audio %}
+  <div class="hud-controls">
+    <button id="audio-toggle" class="audio-toggle" type="button" data-playing="false" aria-label="Toggle exhibition sound">
+      <span class="audio-dot" aria-hidden="true"></span>
+      <span id="audio-label">Sound</span>
+    </button>
+  </div>
+  {% endif %}
+
+  <main id="exhibition">
+    {% for scene in scenes %}
+    <section
+      id="{{ scene.id }}"
+      class="scene scene-{{ scene.kind_name }}{% if scene.framing %} framing-{{ scene.framing }}{% endif %}{% if scene.has_hero %} has-hero{% endif %}"
+      data-bg="{{ scene.palette.background }}"
+      data-surface="{{ scene.palette.surface }}"
+      data-fg="{{ scene.palette.foreground }}"
+      data-muted="{{ scene.palette.muted }}"
+      data-accent="{{ scene.palette.accent }}"
+      data-border="{{ scene.palette.border }}"
+      data-vignette="{{ scene.vignette }}"
+      {% if scene.audio %}
+      data-audio-src="{{ scene.audio_href | safe }}"
+      data-audio-vol="{{ scene.audio.volume }}"
+      data-audio-fade="{{ scene.audio.fade_ms }}"
+      data-audio-loop="{{ scene.audio.loop_audio }}"
+      {% endif %}
+      {% if scene.kind_name == "horizontal_track" %}
+      data-horizontal-track="true"
+      data-pace="{{ scene.pace_multiplier }}"
+      {% endif %}
+      {% if scene.kind_name == "pinned_story" %}
+      data-pinned-story="true"
+      data-pace="{{ scene.pace_multiplier }}"
+      {% endif %}
+    >
+      {% if scene.kind_name == "cover" %}
+        {% if scene.hero_image %}
+        <div class="cover-backdrop">
+          <img src="{{ scene.hero_image.src | safe }}" alt="{{ scene.hero_image.alt }}" />
+          <div class="cover-scrim"></div>
+        </div>
+        {% endif %}
+        <div class="cover-content">
+          {% if scene.date_label %}<p class="cover-date" data-field="caption">{{ scene.date_label }}</p>{% endif %}
+          <h1 class="display-title cover-title" data-field="title">{{ scene.title }}</h1>
+          {% if scene.subtitle %}<p class="cover-subtitle" data-field="note">{{ scene.subtitle }}</p>{% endif %}
+          <button class="enter-btn" type="button" data-enter-exhibition>{{ scene.enter_label }}</button>
+          {% if has_audio %}<p class="cover-hint">소리를 켜고 천천히 내려보세요</p>{% endif %}
+        </div>
+
+      {% elif scene.kind_name == "spotlight" %}
+        {% if scene.framing == "full_bleed" %}
+        <div class="spotlight-inner">
+          <img class="fullbleed-media" src="{{ scene.media.src | safe }}" alt="{{ scene.media.alt }}" loading="lazy" />
+          <div class="fullbleed-overlay reveal">
+            {% if scene.chapter_label %}<span class="chapter-label" data-field="chapter">{{ scene.chapter_label }}</span>{% endif %}
+            {% if scene.title %}<h2 class="display-title spotlight-title" data-field="title">{{ scene.title }}</h2>{% endif %}
+            {% if scene.note %}<p class="spotlight-note" data-field="note">{{ scene.note }}</p>{% endif %}
+            {% if scene.media.caption or scene.media.meta %}
+            <div class="plaque">
+              {% if scene.media.caption %}<p class="plaque-caption" data-field="caption">{{ scene.media.caption }}</p>{% endif %}
+              {% if scene.media.meta %}<p class="plaque-meta">{{ scene.media.meta }}</p>{% endif %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% elif scene.framing == "editorial_split" %}
+        <div class="spotlight-inner">
+          <div class="split-grid">
+            <div class="spotlight-frame reveal">
+              <img src="{{ scene.media.src | safe }}" alt="{{ scene.media.alt }}" loading="lazy" />
+            </div>
+            <div class="reveal">
+              {% if scene.chapter_label %}<span class="chapter-label" data-field="chapter">{{ scene.chapter_label }}</span>{% endif %}
+              {% if scene.title %}<h2 class="display-title spotlight-title" data-field="title">{{ scene.title }}</h2>{% endif %}
+              {% if scene.note %}<p class="spotlight-note" data-field="note">{{ scene.note }}</p>{% endif %}
+              {% if scene.media.caption or scene.media.meta %}
+              <div class="plaque">
+                {% if scene.media.caption %}<p class="plaque-caption" data-field="caption">{{ scene.media.caption }}</p>{% endif %}
+                {% if scene.media.meta %}<p class="plaque-meta">{{ scene.media.meta }}</p>{% endif %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="spotlight-inner">
+          {% if scene.chapter_label or scene.title or scene.note %}
+          <header class="spotlight-header reveal">
+            {% if scene.chapter_label %}<span class="chapter-label" data-field="chapter">{{ scene.chapter_label }}</span>{% endif %}
+            {% if scene.title %}<h2 class="display-title spotlight-title" data-field="title">{{ scene.title }}</h2>{% endif %}
+            {% if scene.note %}<p class="spotlight-note" data-field="note">{{ scene.note }}</p>{% endif %}
+          </header>
+          {% endif %}
+          <figure class="spotlight-frame reveal">
+            <img src="{{ scene.media.src | safe }}" alt="{{ scene.media.alt }}" loading="lazy" />
+            {% if scene.media.caption or scene.media.meta %}
+            <figcaption class="plaque">
+              {% if scene.media.caption %}<p class="plaque-caption" data-field="caption">{{ scene.media.caption }}</p>{% endif %}
+              {% if scene.media.meta %}<p class="plaque-meta">{{ scene.media.meta }}</p>{% endif %}
+            </figcaption>
+            {% endif %}
+          </figure>
+        </div>
+        {% endif %}
+
+      {% elif scene.kind_name == "horizontal_track" %}
+        <div class="horizontal-sticky">
+          <header class="horizontal-header">
+            <div>
+              {% if scene.chapter_label %}<span class="chapter-label" data-field="chapter">{{ scene.chapter_label }}</span>{% endif %}
+              {% if scene.intro %}<p class="horizontal-intro" data-field="note">{{ scene.intro }}</p>{% endif %}
+            </div>
+            <span class="horizontal-cue">SCROLL ↓ →</span>
+          </header>
+          <div class="horizontal-rail">
+            {% for item in scene.items %}
+            <figure class="track-card" data-item-index="{{ loop.index0 }}">
+              <div class="track-card-frame">
+                <img src="{{ item.src | safe }}" alt="{{ item.alt }}" loading="lazy" />
+              </div>
+              {% if item.caption or item.meta %}
+              <figcaption class="plaque">
+                {% if item.caption %}<p class="plaque-caption" data-item-field="caption">{{ item.caption }}</p>{% endif %}
+                {% if item.meta %}<p class="plaque-meta">{{ item.meta }}</p>{% endif %}
+              </figcaption>
+              {% endif %}
+            </figure>
+            {% endfor %}
+          </div>
+          <div class="horizontal-meter" aria-hidden="true">
+            <div class="horizontal-meter-fill"></div>
+          </div>
+        </div>
+
+      {% elif scene.kind_name == "pinned_story" %}
+        <div class="pinned-sticky">
+          <div class="pinned-stage">
+            {% if scene.chapter_label %}<span class="chapter-label" data-field="chapter">{{ scene.chapter_label }}</span>{% endif %}
+            {% for beat in scene.beats %}
+            <article class="pinned-beat{% if loop.first %} is-active{% endif %}{% if beat.media %} has-media{% endif %}" data-item-index="{{ loop.index0 }}">
+              {% if beat.media %}
+              <img class="pinned-beat-media" src="{{ beat.media.src | safe }}" alt="{{ beat.media.alt }}" loading="lazy" />
+              {% endif %}
+              <div class="beat-copy">
+                {% if beat.eyebrow %}<p class="beat-eyebrow">{{ beat.eyebrow }}</p>{% endif %}
+                {% if beat.heading %}<h2 class="display-title beat-heading" data-item-field="title">{{ beat.heading }}</h2>{% endif %}
+                <p class="beat-body" data-item-field="caption">{{ beat.body }}</p>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+          <div class="pinned-dots" aria-hidden="true">
+            {% for beat in scene.beats %}
+            <span class="pinned-dot{% if loop.first %} is-active{% endif %}"></span>
+            {% endfor %}
+          </div>
+        </div>
+
+      {% elif scene.kind_name == "video_moment" %}
+        <div class="video-shell reveal">
+          {% if scene.chapter_label %}<span class="chapter-label" data-field="chapter">{{ scene.chapter_label }}</span>{% endif %}
+          <figure class="video-frame">
+            <video
+              src="{{ scene.video_src | safe }}"
+              {% if scene.poster %}poster="{{ scene.poster | safe }}"{% endif %}
+              playsinline
+              {% if scene.muted_autoplay %}muted data-autoplay="true"{% else %}controls{% endif %}
+              {% if scene.loop_video %}loop{% endif %}
+              preload="metadata"
+            ></video>
+          </figure>
+          {% if scene.caption %}
+          <figcaption class="plaque">
+            <p class="plaque-caption" data-field="caption">{{ scene.caption }}</p>
+          </figcaption>
+          {% endif %}
+        </div>
+
+      {% elif scene.kind_name == "ending" %}
+        <div class="ending-inner reveal">
+          <span class="chapter-label">Fin</span>
+          <h2 class="display-title ending-title" data-field="title">{{ scene.title }}</h2>
+          {% if scene.message %}<p class="ending-message" data-field="note">{{ scene.message }}</p>{% endif %}
+          {% if scene.credits %}
+          <ul class="ending-credits">
+            {% for credit in scene.credits %}
+            <li>{{ credit }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <button class="replay-btn" type="button" data-replay-exhibition>{{ scene.replay_label }}</button>
+        </div>
+      {% endif %}
+    </section>
+    {% endfor %}
+  </main>
+
+  {% if inline_js %}
+  <script>{{ inline_js | safe }}</script>
+  {% else %}
+  <script src="assets/gallery.js"></script>
+  {% endif %}
+</body>
+</html>

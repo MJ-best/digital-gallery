@@ -1,0 +1,64 @@
+name: DigitalGallery
+options:
+  bundleIdPrefix: com.digitalgallery
+  deploymentTarget:
+    macOS: "14.0"
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+packages:
+  DigitalGalleryApple:
+    path: ../apple
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.9"
+    PRODUCT_NAME: DigitalGallery
+    ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    INFOPLIST_FILE: Resources/Info.plist
+    GENERATE_INFOPLIST_FILE: NO
+
+targets:
+  DigitalGallery-macOS:
+    type: application
+    platform: macOS
+    sources:
+      - path: ../apple/Sources/DigitalGalleryApp
+      - path: Resources/Assets.xcassets
+      - path: Resources/PrivacyInfo.xcprivacy
+    dependencies:
+      - package: DigitalGalleryApple
+        product: GalleryBridge
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.digitalgallery.app
+        ARCHS: arm64
+        CODE_SIGN_ENTITLEMENTS: Entitlements/DigitalGallery-macOS.entitlements
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
+        LD_RUNPATH_SEARCH_PATHS:
+          - "$(inherited)"
+          - "@executable_path/../Frameworks"
+
+  DigitalGallery-iPadOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: ../apple/Sources/DigitalGalleryApp
+      - path: Resources/Assets.xcassets
+      - path: Resources/PrivacyInfo.xcprivacy
+    dependencies:
+      - package: DigitalGalleryApple
+        product: GalleryBridge
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.digitalgallery.app
+        CODE_SIGN_ENTITLEMENTS: Entitlements/DigitalGallery-iOS.entitlements
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: NO
+        LD_RUNPATH_SEARCH_PATHS:
+          - "$(inherited)"
+          - "@executable_path/Frameworks"

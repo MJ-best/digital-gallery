@@ -1,0 +1,144 @@
+{
+  "schema_version": "0.1.0",
+  "id": "fukuoka-travel-exhibition-01",
+  "title": "비 오는 후쿠오카",
+  "subtitle": "우산 아래 천천히 걸었던 하카타의 기록",
+  "author": "Travel Archive",
+  "created_at": "2026-11-23T03:45:00Z",
+  "theme": {
+    "preset": "editorial_gallery",
+    "display_font": "\"Iowan Old Style\", \"AppleMyungjo\", \"Noto Serif KR\", Georgia, serif",
+    "body_font": "\"Pretendard\", -apple-system, BlinkMacSystemFont, \"Apple SD Gothic Neo\", sans-serif",
+    "lighting_transition_ms": 850
+  },
+  "scenes": [
+    {
+      "id": "scene-cover",
+      "atmosphere": {
+        "mood": { "preset": "warm_paper" },
+        "audio": {
+          "track": "audio/morning_pad.wav",
+          "volume": 0.45,
+          "fade_ms": 1400,
+          "loop_audio": true
+        },
+        "vignette": 0.0
+      },
+      "type": "cover",
+      "title": "비 오는 후쿠오카",
+      "subtitle": "우산 아래 천천히 걸었던 하카타의 기록",
+      "date_label": "FUKUOKA · HAKATA",
+      "hero_image": {
+        "src": "images/01_rainy_umbrella.jpg",
+        "alt": "Rainy street in Fukuoka with blue umbrella"
+      },
+      "enter_label": "전시 입장하기"
+    },
+    {
+      "id": "scene-morning",
+      "atmosphere": {
+        "mood": { "preset": "warm_paper" },
+        "audio": {
+          "track": "audio/morning_pad.wav",
+          "volume": 0.45,
+          "fade_ms": 1400,
+          "loop_audio": true
+        },
+        "vignette": 0.0
+      },
+      "type": "spotlight",
+      "chapter_label": "Room 01 · Morning Pause",
+      "title": "비 오는 아침, 커피와 연금술사",
+      "note": "빗소리가 창을 두드리는 오전. 앙버터 스콘과 따뜻한 커피 한 잔 앞에서 잠시 발걸음을 멈췄습니다.",
+      "media": {
+        "src": "images/04_morning_alchemist.jpg",
+        "alt": "Coffee, scone and The Alchemist book",
+        "caption": "여행 중 가장 느리게 흘렀던 한 시간",
+        "meta": "FUKUOKA · MORNING CAFÉ"
+      },
+      "framing": "museum_frame"
+    },
+    {
+      "id": "scene-walk",
+      "atmosphere": {
+        "mood": { "preset": "soft_dim" },
+        "audio": {
+          "track": "audio/morning_pad.wav",
+          "volume": 0.4,
+          "fade_ms": 1400,
+          "loop_audio": true
+        },
+        "vignette": 0.15
+      },
+      "type": "horizontal_track",
+      "chapter_label": "Room 02 · Hakata Walk",
+      "intro": "아래로 내리면 하카타 골목의 오후를 따라 옆으로 걸어갑니다.",
+      "items": [
+        {
+          "src": "images/02_hakata_arcade.jpg",
+          "alt": "Hakata station rainy arcade",
+          "caption": "비에 젖은 하카타역 앞, 캐리어를 끄는 사람들",
+          "meta": "HAKATA STATION"
+        },
+        {
+          "src": "images/03_fun_hakata.jpg",
+          "alt": "Fun Hakata mural behind taxi sign",
+          "caption": "택시 승강장 너머로 보이던 유쾌한 벽화",
+          "meta": "FUN HAKATA!"
+        },
+        {
+          "src": "images/05_melonpan.jpg",
+          "alt": "Melonpan and acai smoothie",
+          "caption": "편의점 118엔 멜론빵과 작은 당 충전",
+          "meta": "CONVENIENCE STORE"
+        },
+        {
+          "src": "images/06_ikkousha_ramen.jpg",
+          "alt": "Hakata Ikkousha ramen and beer",
+          "caption": "하루의 피로를 녹여준 잇코샤 라멘과 생맥주",
+          "meta": "博多一幸舎 · DINNER"
+        }
+      ],
+      "pace_multiplier": 1.15
+    },
+    {
+      "id": "scene-night",
+      "atmosphere": {
+        "mood": { "preset": "obsidian" },
+        "audio": {
+          "track": "audio/night_drone.wav",
+          "volume": 0.5,
+          "fade_ms": 1600,
+          "loop_audio": true
+        },
+        "vignette": 0.5
+      },
+      "type": "spotlight",
+      "chapter_label": "Room 03 · Nakasu Nocturne",
+      "title": "밤이 내려앉은 나카스 강변",
+      "note": "조명이 어두워지고 밤의 사운드가 흐릅니다. 검은 수면 위로 도시의 불빛이 길게 번졌습니다.",
+      "media": {
+        "src": "images/07_nakasu_night.jpg",
+        "alt": "Night reflection on Nakasu river in Fukuoka",
+        "caption": "물결 위에 비친 후쿠오카의 마지막 밤",
+        "meta": "NAKASU RIVER · NIGHT"
+      },
+      "framing": "full_bleed"
+    },
+    {
+      "id": "scene-ending",
+      "atmosphere": {
+        "mood": { "preset": "dark_room" },
+        "vignette": 0.25
+      },
+      "type": "ending",
+      "title": "비 오는 후쿠오카",
+      "message": "천천히 걸어주셔서 감사합니다.",
+      "credits": [
+        "7 Photographs · 2 Ambient Soundscapes",
+        "Curated with Digital Gallery"
+      ],
+      "replay_label": "처음으로 돌아가기"
+    }
+  ]
+}

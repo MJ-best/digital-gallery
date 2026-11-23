@@ -1,0 +1,20 @@
+[package]
+name = "gallery-ffi"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+name = "gallery_ffi"
+
+[[bin]]
+name = "uniffi-bindgen"
+path = "src/bin/uniffi_bindgen.rs"
+
+[dependencies]
+gallery-core = { path = "../gallery-core" }
+gallery-media = { path = "../gallery-media" }
+gallery-export = { path = "../gallery-export" }
+serde_json.workspace = true
+thiserror.workspace = true
+uniffi = { version = "0.28", features = ["cli"] }

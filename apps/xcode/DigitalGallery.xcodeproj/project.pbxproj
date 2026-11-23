@@ -1,0 +1,498 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		213938BABD1510C67BE7322B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BCDF3F37FEF8C949291B73 /* ContentView.swift */; };
+		246BC226188AE6CACF1698DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */; };
+		28DD18C8D7A9704C615F55D0 /* ExhibitionWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */; };
+		3F66CD59BE9E7BC30D07F0D5 /* ExhibitionWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */; };
+		48314C5D70E6560C02E2B9E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */; };
+		60440847ED6284406AAD74C2 /* DigitalGalleryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787D2E408D603A88F8A84C86 /* DigitalGalleryApp.swift */; };
+		788F521F1CD25ECF4A5D5551 /* GalleryBridge in Frameworks */ = {isa = PBXBuildFile; productRef = 124C9C5BBAD44830DC1F074D /* GalleryBridge */; };
+		9AC15ECE15AE6D5B7EDA5496 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BCDF3F37FEF8C949291B73 /* ContentView.swift */; };
+		B061E95B0B56B6738D2CE6E8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */; };
+		E6483AE54D78FC656081A994 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */; };
+		F2211D244090CB2FED9ADBAA /* DigitalGalleryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787D2E408D603A88F8A84C86 /* DigitalGalleryApp.swift */; };
+		F4A9CF7200402A3E4831D209 /* GalleryBridge in Frameworks */ = {isa = PBXBuildFile; productRef = 5D51EA6340081C8F31AFCF67 /* GalleryBridge */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		17BCDF3F37FEF8C949291B73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionWebView.swift; sourceTree = "<group>"; };
+		4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		787D2E408D603A88F8A84C86 /* DigitalGalleryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalGalleryApp.swift; sourceTree = "<group>"; };
+		A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C03DC59C0B027CFD943E8F20 /* DigitalGallery-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DigitalGallery-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8933E62202F218F76236E4E /* DigitalGallery-iPadOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "DigitalGallery-iPadOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDAAFCEEF0B9F4B2D7C3AEB9 /* apple */ = {isa = PBXFileReference; lastKnownFileType = folder; name = apple; path = ../apple; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		381594DFB121A15730A7BCC9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4A9CF7200402A3E4831D209 /* GalleryBridge in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6ED91C95AEB9F10292B20001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				788F521F1CD25ECF4A5D5551 /* GalleryBridge in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		188C7542B20CF1D476C050E8 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A1F599E5CB0436496E82BBB7 /* DigitalGalleryApp */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		23D0C1B3E776630B5F4B33EF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D8933E62202F218F76236E4E /* DigitalGallery-iPadOS.app */,
+				C03DC59C0B027CFD943E8F20 /* DigitalGallery-macOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5DE4BF08CD88BF151536A72D /* apps */ = {
+			isa = PBXGroup;
+			children = (
+				C00E8893B5D0FC42A8786A40 /* apple */,
+			);
+			name = apps;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		9405D62375E11BFB4A0F5F89 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */,
+				A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A1F599E5CB0436496E82BBB7 /* DigitalGalleryApp */ = {
+			isa = PBXGroup;
+			children = (
+				17BCDF3F37FEF8C949291B73 /* ContentView.swift */,
+				787D2E408D603A88F8A84C86 /* DigitalGalleryApp.swift */,
+				1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */,
+			);
+			path = DigitalGalleryApp;
+			sourceTree = "<group>";
+		};
+		B00E2C7311B4739446BCFF62 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				DDAAFCEEF0B9F4B2D7C3AEB9 /* apple */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		B515A37BABCE8A49EB94A04C = {
+			isa = PBXGroup;
+			children = (
+				5DE4BF08CD88BF151536A72D /* apps */,
+				B00E2C7311B4739446BCFF62 /* Packages */,
+				9405D62375E11BFB4A0F5F89 /* Resources */,
+				23D0C1B3E776630B5F4B33EF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C00E8893B5D0FC42A8786A40 /* apple */ = {
+			isa = PBXGroup;
+			children = (
+				188C7542B20CF1D476C050E8 /* Sources */,
+			);
+			path = apple;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4BB478D1FE5044B246A95447 /* DigitalGallery-iPadOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DEE147E82E5D3326E2068B1F /* Build configuration list for PBXNativeTarget "DigitalGallery-iPadOS" */;
+			buildPhases = (
+				48D80885B65ACA9E57329C5F /* Sources */,
+				07F1079344EDFE1E75812CCD /* Resources */,
+				6ED91C95AEB9F10292B20001 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DigitalGallery-iPadOS";
+			packageProductDependencies = (
+				124C9C5BBAD44830DC1F074D /* GalleryBridge */,
+			);
+			productName = "DigitalGallery-iPadOS";
+			productReference = D8933E62202F218F76236E4E /* DigitalGallery-iPadOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8014C151F586FB10869C4089 /* DigitalGallery-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4D41A8CFC4035C6AC4E6ED6C /* Build configuration list for PBXNativeTarget "DigitalGallery-macOS" */;
+			buildPhases = (
+				5CB88FA75E198EFAB16822D0 /* Sources */,
+				F6F054BBA114F717CD29D4A5 /* Resources */,
+				381594DFB121A15730A7BCC9 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DigitalGallery-macOS";
+			packageProductDependencies = (
+				5D51EA6340081C8F31AFCF67 /* GalleryBridge */,
+			);
+			productName = "DigitalGallery-macOS";
+			productReference = C03DC59C0B027CFD943E8F20 /* DigitalGallery-macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F6BD623535067A2116A0026E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = B990F88504E675E9A6BBE392 /* Build configuration list for PBXProject "DigitalGallery" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B515A37BABCE8A49EB94A04C;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				68B755ED610304D7E50FCAD3 /* XCLocalSwiftPackageReference "../apple" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 23D0C1B3E776630B5F4B33EF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8014C151F586FB10869C4089 /* DigitalGallery-macOS */,
+				4BB478D1FE5044B246A95447 /* DigitalGallery-iPadOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		07F1079344EDFE1E75812CCD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48314C5D70E6560C02E2B9E9 /* Assets.xcassets in Resources */,
+				E6483AE54D78FC656081A994 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6F054BBA114F717CD29D4A5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				246BC226188AE6CACF1698DA /* Assets.xcassets in Resources */,
+				B061E95B0B56B6738D2CE6E8 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		48D80885B65ACA9E57329C5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				213938BABD1510C67BE7322B /* ContentView.swift in Sources */,
+				60440847ED6284406AAD74C2 /* DigitalGalleryApp.swift in Sources */,
+				3F66CD59BE9E7BC30D07F0D5 /* ExhibitionWebView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5CB88FA75E198EFAB16822D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AC15ECE15AE6D5B7EDA5496 /* ContentView.swift in Sources */,
+				F2211D244090CB2FED9ADBAA /* DigitalGalleryApp.swift in Sources */,
+				28DD18C8D7A9704C615F55D0 /* ExhibitionWebView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		08EBF5F2919D878606681F70 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Entitlements/DigitalGallery-iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitalgallery.app;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		321BC737795D925F2827C6BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Entitlements/DigitalGallery-macOS.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitalgallery.app;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		52853C0EF295BB3D0C76F7ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = DigitalGallery;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		AFDC3B396964C721432B30DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = DigitalGallery;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		E6DD408C9AA90BA3D9838FEC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Entitlements/DigitalGallery-macOS.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitalgallery.app;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		EA6EFB63198FC53054654E9B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Entitlements/DigitalGallery-iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitalgallery.app;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4D41A8CFC4035C6AC4E6ED6C /* Build configuration list for PBXNativeTarget "DigitalGallery-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				321BC737795D925F2827C6BF /* Debug */,
+				E6DD408C9AA90BA3D9838FEC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B990F88504E675E9A6BBE392 /* Build configuration list for PBXProject "DigitalGallery" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFDC3B396964C721432B30DA /* Debug */,
+				52853C0EF295BB3D0C76F7ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DEE147E82E5D3326E2068B1F /* Build configuration list for PBXNativeTarget "DigitalGallery-iPadOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA6EFB63198FC53054654E9B /* Debug */,
+				08EBF5F2919D878606681F70 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		68B755ED610304D7E50FCAD3 /* XCLocalSwiftPackageReference "../apple" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../apple;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		124C9C5BBAD44830DC1F074D /* GalleryBridge */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GalleryBridge;
+		};
+		5D51EA6340081C8F31AFCF67 /* GalleryBridge */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GalleryBridge;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F6BD623535067A2116A0026E /* Project object */;
+}
