@@ -13,6 +13,10 @@ Apple 생태계(macOS · iPadOS)에 최적화된 개인용 디지털 전시관 �
 | :---: | :---: |
 | ![4 Curated Themes](apps/xcode/AppStoreScreenshots/AppStore_02_Themes.png) | ![Lighting and Ambient Audio](apps/xcode/AppStoreScreenshots/AppStore_03_Atmosphere.png) |
 
+### 모바일 청첩장 예시 (`Our_Wedding_2027.gallery` · Atelier Poster 테마)
+
+![Mobile Wedding Invitation](apps/xcode/AppStoreScreenshots/AppStore_04_Wedding.png)
+
 ## App Store Release Kit
 
 App Store Connect 제출에 필요한 프로젝트·메타데이터·스크린샷 자료가 저장소에 포함되어 있습니다.

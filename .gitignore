@@ -16,6 +16,7 @@ apps/apple/Sources/CGalleryFFI/
 # Generated demo exports
 demo/export/
 demo/scanned_export/
+demo/wedding_export/
 demo/scanned_manifest.json
 
 # macOS metadata
