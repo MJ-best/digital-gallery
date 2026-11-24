@@ -1,83 +1,68 @@
-# Digital Gallery
+<p align="center">
+  <img src="apps/xcode/Resources/Assets.xcassets/AppIcon.appiconset/icon_256.png" width="112" height="112" alt="Memoria App Icon" />
+</p>
 
-> **"사진을 저장하는 앱이 아니라, 사진을 하나의 경험으로 만들어내는 앱."**
+<h1 align="center">Memoria (Digital Gallery)</h1>
 
-Apple 생태계(macOS · iPadOS)에 최적화된 개인용 디지털 전시관 제작 도구입니다.  
-**Rust Core + UniFFI + SwiftUI + iCloud Drive (`.gallery` Document Package)** 아키텍처로 설계되어 있으며, 스크롤 동선·조명 변화·앰비언트 사운드·캡션이 어우러진 독립형 HTML 전시관을 생성합니다.
+<p align="center">
+  <strong>소중한 순간을, 더 특별하게.</strong><br/>
+  사진을 저장하는 앱이 아니라, 사진을 하나의 전시 경험으로 만들어내는 Apple 네이티브 디지털 전시관 제작 도구
+</p>
 
-## Preview Screenshots (App Store 2880×1800)
+---
 
-![Digital Gallery — Travel Exhibition](apps/xcode/AppStoreScreenshots/AppStore_01_Exhibition.png)
+## App Store Preview Screenshots
 
-| 4가지 디자인 시안 실시간 전환 | 조명 암전 · 사운드 · 단일 HTML 공유 |
+### Mac App Store (`2880 × 1800`, 16:10)
+
+![Memoria — Main Editor](apps/xcode/AppStoreScreenshots/macOS/01_Memoria_Main.png)
+
+| 우리의 갤러리 & 실시간 편집 | 여행사진전 · 단일 HTML 공유 |
 | :---: | :---: |
-| ![4 Curated Themes](apps/xcode/AppStoreScreenshots/AppStore_02_Themes.png) | ![Lighting and Ambient Audio](apps/xcode/AppStoreScreenshots/AppStore_03_Atmosphere.png) |
+| ![Our Gallery](apps/xcode/AppStoreScreenshots/macOS/02_Our_Gallery.png) | ![Travel Exhibition](apps/xcode/AppStoreScreenshots/macOS/03_Travel_Exhibition.png) |
 
-### 모바일 청첩장 예시 (`Our_Wedding_2027.gallery` · Atelier Poster 테마)
+### iPhone App Store (`1290 × 2796`, 6.7" Display)
 
-![Mobile Wedding Invitation](apps/xcode/AppStoreScreenshots/AppStore_04_Wedding.png)
+| 파스텔 블루 미니멀 커버 | 우리의 갤러리 그리드 | 단일 HTML 공유 & 여행전 |
+| :---: | :---: | :---: |
+| <img src="apps/xcode/AppStoreScreenshots/iOS/01_iPhone_Cover.png" width="240" /> | <img src="apps/xcode/AppStoreScreenshots/iOS/02_iPhone_Gallery.png" width="240" /> | <img src="apps/xcode/AppStoreScreenshots/iOS/03_iPhone_Travel.png" width="240" /> |
+
+---
 
 ## App Store Release Kit
 
-App Store Connect 제출에 필요한 프로젝트·메타데이터·스크린샷 자료가 저장소에 포함되어 있습니다.
+App Store Connect 제출에 필요한 프로젝트·아이콘·스크린샷·심사 서류가 모두 정리되어 있습니다.
 
-- **스크린샷 (2880×1800, 16:10)**: [`apps/xcode/AppStoreScreenshots/`](apps/xcode/AppStoreScreenshots/)
-- **App Store Connect 메타데이터 · 심사 노트 · 배포 가이드**: [`docs/app-store-release.md`](docs/app-store-release.md)
-- **Xcode 프로젝트 & 설정**: [`apps/xcode/project.yml`](apps/xcode/project.yml) · [`Info.plist`](apps/xcode/Resources/Info.plist) · [`PrivacyInfo.xcprivacy`](apps/xcode/Resources/PrivacyInfo.xcprivacy) · [`AppIcon`](apps/xcode/Resources/Assets.xcassets/AppIcon.appiconset/)
-- **아카이브 & 업로드 스크립트**: [`scripts/archive-appstore.sh`](scripts/archive-appstore.sh) · [`apps/xcode/ExportOptions.plist`](apps/xcode/ExportOptions.plist)
+- **iOS 스크린샷 (1290×2796, 6.7"):** [`apps/xcode/AppStoreScreenshots/iOS/`](apps/xcode/AppStoreScreenshots/iOS/)
+- **macOS 스크린샷 (2880×1800, 16:10):** [`apps/xcode/AppStoreScreenshots/macOS/`](apps/xcode/AppStoreScreenshots/macOS/)
+- **앱 아이콘 세트 (16px~1024px):** [`apps/xcode/Resources/Assets.xcassets/AppIcon.appiconset/`](apps/xcode/Resources/Assets.xcassets/AppIcon.appiconset/)
+- **App Store Connect 메타데이터 · 프라이버시 · 심사 노트:** [`docs/app-store-release.md`](docs/app-store-release.md)
+- **Xcode 프로젝트 & 심사 필수 설정:** [`apps/xcode/project.yml`](apps/xcode/project.yml) · [`Info.plist`](apps/xcode/Resources/Info.plist) · [`PrivacyInfo.xcprivacy`](apps/xcode/Resources/PrivacyInfo.xcprivacy) · [`ExportOptions.plist`](apps/xcode/ExportOptions.plist)
+- **서명 · 아카이브 스크립트:** [`scripts/archive-appstore.sh`](scripts/archive-appstore.sh)
 
-## Features
+---
 
-- **EXIF 자동 큐레이션 (`gallery-media`)**: 폴더 내 사진/영상의 촬영 시각과 가로·세로 비율을 분석해 챕터를 나누고 전시 씬을 자동 제안
+## Architecture & Features
+
+**Rust Core + UniFFI (`GalleryFFI.xcframework`) + SwiftUI + iCloud Drive (`.gallery` Document Package)**
+
+- **EXIF 자동 큐레이션 (`gallery-media`)**: 폴더 내 사진/영상의 촬영 시각과 가로·세로 비율을 분석해 챕터와 전시 씬을 자동 제안
 - **6종 전시 씬 모델 (`gallery-core`)**: `Cover`, `Spotlight`, `HorizontalTrack`(세로→가로 Sticky 스크롤), `PinnedStory`(연속 보간 스토리), `VideoMoment`, `Ending`
-- **4종 에디토리얼 디자인 시안 (`gallery-export`)**: 토스 심플리시티 원칙을 반영한 `Editorial Magazine`, `Toss Minimal`, `Midnight Film`, `Atelier Poster` 실시간 무중단 전환
-- **실전 미디어 최적화 & 단일 HTML 공유**: 최대 2048px 자동 리사이즈·EXIF 회전 보정, OG 메타태그, AirDrop/iOS 파일에서도 바로 열리는 단일 Self-Contained HTML 내보내기
-- **Apple 네이티브 편집기 (`apps/apple` & `apps/xcode`)**: `WKWebView` 무중단 라이브 패치, `Cmd+Z` Undo/Redo, `PhotosPicker`, `NSFileCoordinator` 기반 iCloud Drive `.gallery` 동기화, macOS + iPadOS `GalleryFFI.xcframework` 지원
-
-## Workspace Structure
-
-```text
-digital-gallery/
-├── crates/
-│   ├── gallery-core/      # 전시관 데이터 모델, 6종 씬, 조명/사운드, 4종 테마
-│   ├── gallery-media/     # 폴더 스캔, EXIF 분석, 시간대별 클러스터링 & 씬 추천
-│   ├── gallery-export/    # Tera HTML 렌더러, 이미지 최적화, 단일 HTML 번들러, Web Audio 런타임
-│   ├── gallery-ffi/       # UniFFI Swift 바인딩 및 XCFramework 코어
-│   └── gallery-cli/       # CLI (scan / build / demo)
-├── apps/
-│   ├── apple/             # SwiftPM 공용 브릿지(GalleryBridge) & SwiftUI 편집기
-│   └── xcode/             # App Store 배포용 macOS/iPadOS Xcode 프로젝트 (project.yml)
-├── scripts/
-│   ├── build-swift-bridge.sh
-│   ├── build-xcframework.sh
-│   └── archive-appstore.sh
-└── docs/
-    └── app-store-release.md
-```
+- **5종 디자인 시안 (`gallery-export`)**: `Memoria Pastel Blue`, `Toss Minimal`, `Editorial Magazine`, `Atelier Poster`, `Midnight Film` 실시간 무중단 전환
+- **실전 미디어 최적화 & 단일 HTML 공유**: 최대 2048px 자동 리사이즈·EXIF 회전 보정, OG 메타태그, AirDrop/카카오톡/Safari에서 바로 여는 단일 Self-Contained HTML 내보내기
+- **Apple 네이티브 편집기 (`apps/apple` & `apps/xcode`)**: `WKWebView` 무중단 라이브 패치, `Cmd+Z` Undo/Redo, `PhotosPicker`, `ShareLink`, `NSFileCoordinator` 기반 `.gallery` 패키지 동기화
 
 ## Quick Start
 
-### 1. Build Rust Core & Swift XCFramework
-
 ```bash
+# 1. Rust Core + macOS/iOS XCFramework 빌드
 ./scripts/build-xcframework.sh
-```
 
-### 2. Run the Native macOS SwiftUI App
-
-```bash
+# 2. macOS SwiftUI 앱 실행
 swift run --package-path apps/apple DigitalGalleryApp
-```
 
-### 3. CLI Usage (Folder → Single-File HTML)
-
-```bash
-# 1) 사진 폴더 스캔 및 manifest.json 초안 생성
-cargo run -- scan /path/to/your/photos --title "비 오는 후쿠오카"
-
-# 2) AirDrop / Safari 공유용 단일 HTML 생성
-cargo run -- build /path/to/your/photos/manifest.json --out ./exhibition --single-file
-open ./exhibition/exhibition-single.html
+# 3. iOS / macOS 서명 아카이브 & .ipa 추출
+./scripts/archive-appstore.sh ipados <YOUR_APPLE_TEAM_ID>
 ```
 
 ## License

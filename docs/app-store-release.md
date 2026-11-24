@@ -6,22 +6,19 @@ macOS · iPadOS App Store 배포를 위한 프로젝트 설정, 메타데이터,
 
 ## 1. 사전 준비 체크리스트 (Apple Developer / App Store Connect)
 
-1. **Bundle ID & Team ID 변경**
-   * `apps/xcode/project.yml`의 `PRODUCT_BUNDLE_IDENTIFIER` (`com.digitalgallery.app`)를 본인의 Apple Developer 계정에 등록한 고유 Bundle ID로 변경합니다.
-   * App Store Connect에서 새 앱을 등록하고 macOS / iOS(iPadOS) 플랫폼을 활성화합니다.
-2. **iCloud Container 활성화**
-   * Apple Developer Portal → Identifiers → 해당 Bundle ID → **iCloud (CloudKit / CloudDocuments)** 체크 후 컨테이너 `iCloud.<YOUR_BUNDLE_ID>`를 연결합니다.
-3. **로컬 아카이브 & 업로드**
+1. **Bundle ID & Team ID 확인**
+   * `apps/xcode/project.yml`에 `PRODUCT_BUNDLE_IDENTIFIER: com.mjbest.digitalgallery`가 설정되어 있습니다.
+   * App Store Connect에서 앱을 등록하고 iOS(iPhone/iPad) / macOS 플랫폼을 활성화합니다.
+2. **업로드용 스크린샷 위치 (드래그 앤 드롭 규격 완료)**
+   * **iPhone 6.7" (`1290×2796`):** `apps/xcode/AppStoreScreenshots/iOS/` (`01_iPhone_Cover.png` ~ `03_iPhone_Travel.png`)
+   * **macOS (`2880×1800`):** `apps/xcode/AppStoreScreenshots/macOS/` (`01_Memoria_Main.png` ~ `03_Travel_Exhibition.png`)
+3. **로컬 아카이브 & 서명 `.ipa` 추출**
    ```bash
-   # 1) 서명 없는 로컬 검증 아카이브
-   ./scripts/archive-appstore.sh macos
-   ./scripts/archive-appstore.sh ipados
-
-   # 2) Apple Team ID로 App Store Connect 서명 및 내보내기
-   ./scripts/archive-appstore.sh macos YOUR_TEAM_ID
-   ./scripts/archive-appstore.sh ipados YOUR_TEAM_ID
+   # Apple Team ID로 서명 아카이브 및 .ipa 추출 (build/export/ipados/DigitalGallery.ipa)
+   ./scripts/archive-appstore.sh ipados 29MWCVNN48
+   ./scripts/archive-appstore.sh macos  29MWCVNN48
    ```
-   또는 `apps/xcode/DigitalGallery.xcodeproj`를 Xcode에서 열고 `Signing & Capabilities`에서 Team을 지정한 뒤 **Product → Archive → Distribute App → App Store Connect**로 업로드합니다.
+   생성된 `build/export/ipados/DigitalGallery.ipa`는 Apple **Transporter** 앱 또는 Xcode Organizer에서 App Store Connect / TestFlight로 바로 업로드할 수 있습니다.
 
 ---
 
