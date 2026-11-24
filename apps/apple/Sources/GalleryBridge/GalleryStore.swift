@@ -42,7 +42,7 @@ public enum ExhibitionThemePreset: String, CaseIterable, Identifiable, Sendable 
 
     public var subtitle: String {
         switch self {
-        case .memoriaPastel: return "구름 마스코트 · 파스텔 웨딩/추억"
+        case .memoriaPastel: return "미니멀 타이포 · 파스텔 블루"
         case .tossClean: return "심플 카드 · 스카이 블루"
         case .editorialGallery: return "화보 매거진 · 세리프"
         case .atelierPoster: return "전시 포스터 · 클래식"
@@ -163,7 +163,7 @@ public final class GalleryStore {
             let summary = try scanFolderToManifest(
                 inputDir: folderURL.path,
                 title: derivedTitle,
-                subtitle: "Curated with Digital Gallery",
+                subtitle: "Curated with Memoria",
                 gapHours: gapHours
             )
             undoStack.removeAll()
@@ -333,22 +333,115 @@ public final class GalleryStore {
         }
     }
 
-    // MARK: - Media Import (Files & PhotosPicker)
-    public func importPhotoDataAsSpotlight(data: Data, suggestedFilename: String) {
-        guard let sourceRoot = sourceRootURL else {
-            self.errorMessage = "먼저 전시관을 열거나 생성해 주세요."
-            return
+    // MARK: - Media Import (Files & Multi-Photo PhotosPicker)
+    @discardableResult
+    public func createNewExhibition(
+        title: String,
+        subtitle: String,
+        photos: [(Data, String)]
+    ) -> Bool {
+        guard !photos.isEmpty else {
+            self.errorMessage = "새 전시를 만들려면 사진을 1장 이상 선택해 주세요."
+            return false
         }
+        clearError()
         let fm = FileManager.default
-        let imagesDir = sourceRoot.appendingPathComponent("images", isDirectory: true)
+        let (packagesRoot, _) = cloudService.resolvePackagesRoot()
+        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let finalTitle = trimmedTitle.isEmpty ? "나의 새로운 전시" : trimmedTitle
+        let trimmedSub = subtitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        let finalSub = trimmedSub.isEmpty ? "Our Special Moments" : trimmedSub
+
+        let sanitized = finalTitle
+            .replacingOccurrences(of: "/", with: "-")
+            .replacingOccurrences(of: ":", with: "-")
+        let uniqueSuffix = Int(Date().timeIntervalSince1970)
+        let pkgURL = packagesRoot.appendingPathComponent("\(sanitized)_\(uniqueSuffix).gallery", isDirectory: true)
+        let imagesDir = pkgURL.appendingPathComponent("images", isDirectory: true)
+
         do {
             try fm.createDirectory(at: imagesDir, withIntermediateDirectories: true)
-            let destURL = imagesDir.appendingPathComponent(suggestedFilename)
-            try data.write(to: destURL)
-            importPhotoAsSpotlight(fileURL: destURL)
+            for (idx, (data, filename)) in photos.enumerated() {
+                let safeName = String(format: "%02d_%@", idx + 1, filename)
+                try data.write(to: imagesDir.appendingPathComponent(safeName))
+            }
+
+            let scanned = try scanFolderToManifest(
+                inputDir: pkgURL.path,
+                title: finalTitle,
+                subtitle: finalSub,
+                gapHours: 4
+            )
+            let styled = try updateThemePreset(
+                json: scanned.rawJson,
+                themePreset: ExhibitionThemePreset.memoriaPastel.rawValue
+            )
+            try styled.rawJson.write(
+                to: pkgURL.appendingPathComponent("manifest.json"),
+                atomically: true,
+                encoding: .utf8
+            )
+
+            undoStack.removeAll()
+            redoStack.removeAll()
+            self.manifest = styled
+            self.sourceRootURL = pkgURL
+            self.selectedSceneID = styled.scenes.first?.id
+            refreshCloudPackages()
+            self.statusMessage = "'\(finalTitle)' 새 전시 생성 완료 (\(photos.count)장)"
+            refreshLivePreview()
+            return true
         } catch {
-            self.errorMessage = "사진 보관함 가져오기 실패: \(error.localizedDescription)"
+            self.errorMessage = "새 전시 생성 실패: \(error.localizedDescription)"
+            return false
         }
+    }
+
+    @discardableResult
+    public func importMultiplePhotoData(_ items: [(Data, String)]) -> Int {
+        guard !items.isEmpty else { return 0 }
+        guard var current = manifest, let sourceRoot = sourceRootURL else {
+            self.errorMessage = "먼저 전시관을 열거나 생성해 주세요."
+            return 0
+        }
+        clearError()
+        pushUndoSnapshot()
+
+        let fm = FileManager.default
+        let imagesDir = sourceRoot.appendingPathComponent("images", isDirectory: true)
+        var addedCount = 0
+
+        do {
+            try fm.createDirectory(at: imagesDir, withIntermediateDirectories: true)
+            for (index, (data, filename)) in items.enumerated() {
+                let destURL = imagesDir.appendingPathComponent(filename)
+                try data.write(to: destURL)
+                let relPath = "images/\(filename)"
+                let label = items.count > 1 ? "추가된 순간 \(index + 1)" : "새로운 순간"
+                current = try addSpotlightScene(
+                    json: current.rawJson,
+                    imageRelPath: relPath,
+                    title: label,
+                    caption: nil,
+                    moodPreset: "warm_paper"
+                )
+                addedCount += 1
+            }
+
+            self.manifest = current
+            if current.scenes.count >= 2 {
+                self.selectedSceneID = current.scenes[current.scenes.count - 2].id
+            }
+            self.statusMessage = "사진 \(addedCount)장을 전시에 추가했어요"
+            refreshLivePreview()
+        } catch {
+            self.errorMessage = "사진 가져오기 실패: \(error.localizedDescription)"
+        }
+        return addedCount
+    }
+
+    public func importPhotoDataAsSpotlight(data: Data, suggestedFilename: String) {
+        _ = importMultiplePhotoData([(data, suggestedFilename)])
     }
 
     public func importPhotoAsSpotlight(fileURL: URL) {
