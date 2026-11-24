@@ -6,6 +6,7 @@
 	<true/>
 	<key>com.apple.security.files.user-selected.read-write</key>
 	<true/>
+	<!-- Uncomment after creating iCloud.com.mjbest.digitalgallery container in Apple Developer Portal:
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
 		<string>iCloud.$(PRODUCT_BUNDLE_IDENTIFIER)</string>
@@ -18,5 +19,6 @@
 	<array>
 		<string>CloudDocuments</string>
 	</array>
+	-->
 </dict>
 </plist>
