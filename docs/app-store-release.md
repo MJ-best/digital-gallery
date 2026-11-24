@@ -11,6 +11,7 @@ macOS · iOS / iPadOS App Store 배포를 위한 프로젝트 설정, 메타데�
    * App Store Connect에서 iOS(iPhone/iPad) 및 macOS 플랫폼 모두 등록되어 있습니다.
 2. **업로드용 스크린샷 위치 (드래그 앤 드롭 규격 완료)**
    * **iPhone 6.7" (`1290×2796`):** `apps/xcode/AppStoreScreenshots/iOS/` (`01_iPhone_Cover.png` ~ `03_iPhone_Travel.png`)
+   * **iPad Pro 13" (`2064×2752`):** `apps/xcode/AppStoreScreenshots/iPadOS/` (`01_iPad_Main.png`, `02_iPad_Our_Gallery.png`, `03_iPad_Share.png`)
    * **macOS (`2880×1800`):** `apps/xcode/AppStoreScreenshots/macOS/` (`01_Memoria_Main.png` ~ `03_Travel_Exhibition.png`)
 3. **App Store Connect 직접 업로드 명령**
    ```bash
