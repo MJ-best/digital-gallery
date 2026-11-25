@@ -35,6 +35,11 @@ struct ContentView: View {
     @State private var newTitle = ""
     @State private var newSubtitle = ""
     @State private var newPickedItems: [PhotosPickerItem] = []
+    @State private var newLoadedPhotos: [(Data, String)] = []
+    @State private var isAnalyzingNewPhotos = false
+    @State private var newRecommendedBGM: MoodBGMRecommendation?
+    @State private var selectedNewBGM: ExhibitionBGMTrack? = .morningLight
+    @State private var bgmPreviewPlayer = BGMPreviewPlayer()
 
     // Toast feedback
     @State private var toastMessage: String?
@@ -76,14 +81,14 @@ struct ContentView: View {
                                     }
                                 }
                             }
+                        }
 
-                            // Clean "+ 새 전시 만들기" card
-                            Button {
-                                showNewExhibitionSheet = true
-                            } label: {
-                                NewExhibitionCard()
-                            }
-                            .buttonStyle(.plain)
+                        if libraryEntries.allSatisfy(\.isSample) {
+                            Text("우상단 + 버튼으로 내 사진 전시를 만들어 보세요")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(.top, 4)
                         }
                     }
                     .padding(.horizontal, 20)
@@ -185,33 +190,103 @@ struct ContentView: View {
                 } footer: {
                     Text("비워두면 기본 제목으로 생성되며, 전시 안에서 언제든 바꿀 수 있습니다.")
                 }
+
+                Section {
+                    if isAnalyzingNewPhotos {
+                        HStack(spacing: 10) {
+                            ProgressView().controlSize(.small)
+                            Text("사진 분위기를 분석해 배경음악을 추천하는 중…")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                    } else {
+                        ForEach(ExhibitionBGMTrack.allCases) { track in
+                            BGMSelectionRow(
+                                track: track,
+                                isSelected: selectedNewBGM == track,
+                                isRecommended: newRecommendedBGM?.track == track,
+                                isPlaying: bgmPreviewPlayer.playingTrack == track,
+                                onSelect: { selectedNewBGM = track },
+                                onTogglePreview: { bgmPreviewPlayer.togglePreview(track) }
+                            )
+                        }
+
+                        Button {
+                            selectedNewBGM = nil
+                            bgmPreviewPlayer.stop()
+                        } label: {
+                            HStack {
+                                Image(systemName: "speaker.slash")
+                                    .foregroundStyle(.secondary)
+                                    .frame(width: 24)
+                                Text("배경음악 없음")
+                                    .foregroundStyle(.primary)
+                                Spacer()
+                                if selectedNewBGM == nil {
+                                    Image(systemName: "checkmark")
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(Color.accentColor)
+                                }
+                            }
+                        }
+                        .buttonStyle(.plain)
+                    }
+                } header: {
+                    Text("배경음악")
+                } footer: {
+                    if let rec = newRecommendedBGM {
+                        Text("추천: \(rec.track.displayName) — \(rec.reason)")
+                    } else {
+                        Text("사진을 고르면 색감과 밝기를 분석해 어울리는 배경음악을 자동 추천합니다.")
+                    }
+                }
             }
             .formStyle(.grouped)
             .navigationTitle("새 전시 만들기")
             #if !os(macOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
+            .onChange(of: newPickedItems) { _, items in
+                Task {
+                    await analyzeNewPickedPhotos(items)
+                }
+            }
+            .onDisappear {
+                bgmPreviewPlayer.stop()
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("취소") {
+                        bgmPreviewPlayer.stop()
                         showNewExhibitionSheet = false
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("만들기") {
+                        bgmPreviewPlayer.stop()
+                        let preloaded = newLoadedPhotos
                         let items = newPickedItems
                         let title = newTitle
                         let subtitle = newSubtitle
+                        let chosenBGM = selectedNewBGM?.fileURL
                         showNewExhibitionSheet = false
                         newPickedItems = []
+                        newLoadedPhotos = []
                         newTitle = ""
                         newSubtitle = ""
+                        newRecommendedBGM = nil
                         Task {
-                            await createAndOpenExhibition(title: title, subtitle: subtitle, items: items)
+                            await createAndOpenExhibition(
+                                title: title,
+                                subtitle: subtitle,
+                                preloaded: preloaded,
+                                items: items,
+                                bgmFileURL: chosenBGM
+                            )
                         }
                     }
                     .fontWeight(.semibold)
-                    .disabled(newPickedItems.isEmpty)
+                    .disabled(newPickedItems.isEmpty || isAnalyzingNewPhotos)
                 }
             }
         }
@@ -295,12 +370,13 @@ struct ContentView: View {
         return candidates.first { FileManager.default.fileExists(atPath: $0.path) }
     }
 
-    private func createAndOpenExhibition(
-        title: String,
-        subtitle: String,
-        items: [PhotosPickerItem]
-    ) async {
-        isCreatingExhibition = true
+    private func analyzeNewPickedPhotos(_ items: [PhotosPickerItem]) async {
+        guard !items.isEmpty else {
+            newLoadedPhotos = []
+            newRecommendedBGM = nil
+            return
+        }
+        isAnalyzingNewPhotos = true
         var loaded: [(Data, String)] = []
         let stamp = Int(Date().timeIntervalSince1970)
         for (idx, item) in items.enumerated() {
@@ -308,8 +384,37 @@ struct ContentView: View {
                 loaded.append((data, "photo_\(stamp)_\(idx + 1).jpg"))
             }
         }
+        newLoadedPhotos = loaded
+        let rec = MoodAudioAdvisor.recommend(from: loaded.map(\.0))
+        newRecommendedBGM = rec
+        selectedNewBGM = rec.track
+        isAnalyzingNewPhotos = false
+    }
 
-        let created = store.createNewExhibition(title: title, subtitle: subtitle, photos: loaded)
+    private func createAndOpenExhibition(
+        title: String,
+        subtitle: String,
+        preloaded: [(Data, String)],
+        items: [PhotosPickerItem],
+        bgmFileURL: URL?
+    ) async {
+        isCreatingExhibition = true
+        var loaded = preloaded
+        if loaded.isEmpty {
+            let stamp = Int(Date().timeIntervalSince1970)
+            for (idx, item) in items.enumerated() {
+                if let data = try? await item.loadTransferable(type: Data.self) {
+                    loaded.append((data, "photo_\(stamp)_\(idx + 1).jpg"))
+                }
+            }
+        }
+
+        let created = store.createNewExhibition(
+            title: title,
+            subtitle: subtitle,
+            photos: loaded,
+            bgmFileURL: bgmFileURL
+        )
         isCreatingExhibition = false
         if created, let pkgURL = store.sourceRootURL {
             reloadLibrary()
@@ -456,29 +561,16 @@ private struct ExhibitionCoverCard: View {
                 }
                 .padding(16)
 
-                // Bottom title, subtitle, and "전시 보기" cue
-                HStack(alignment: .bottom, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(entry.title)
-                            .font(.title2.bold())
-                            .foregroundStyle(.white)
-                            .lineLimit(1)
-                        Text(entry.subtitle.isEmpty ? "사진 \(entry.photoCount)장" : "\(entry.subtitle) · \(entry.photoCount)장")
-                            .font(.subheadline)
-                            .foregroundStyle(.white.opacity(0.86))
-                            .lineLimit(1)
-                    }
-                    Spacer()
-                    HStack(spacing: 4) {
-                        Text("전시 보기")
-                            .font(.caption.weight(.semibold))
-                        Image(systemName: "chevron.right")
-                            .font(.caption2.weight(.bold))
-                    }
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 7)
-                    .background(.ultraThinMaterial, in: Capsule())
+                // Bottom title & full subtitle (no cramped button truncating text)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(entry.title)
+                        .font(.title2.bold())
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
+                    Text(entry.subtitle.isEmpty ? "사진 \(entry.photoCount)장" : "\(entry.subtitle) · \(entry.photoCount)장")
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.88))
+                        .lineLimit(2)
                 }
                 .padding(18)
             }
@@ -489,31 +581,56 @@ private struct ExhibitionCoverCard: View {
     }
 }
 
-// MARK: - Clean "+ 새 전시 만들기" Card
-private struct NewExhibitionCard: View {
+// MARK: - Reusable BGM Track Selection Row (with Recommendation Badge & Live Preview)
+private struct BGMSelectionRow: View {
+    let track: ExhibitionBGMTrack
+    let isSelected: Bool
+    let isRecommended: Bool
+    let isPlaying: Bool
+    let onSelect: () -> Void
+    let onTogglePreview: () -> Void
+
     var body: some View {
-        VStack(spacing: 10) {
-            Image(systemName: "plus.circle.fill")
-                .font(.system(size: 32))
-                .foregroundStyle(Color.accentColor)
-            Text("새 전시 만들기")
-                .font(.headline)
-                .foregroundStyle(.primary)
-            Text("사진 보관함에서 여러 장을 고르면\n자동으로 전시가 완성됩니다")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
+        HStack(spacing: 12) {
+            Button(action: onTogglePreview) {
+                Image(systemName: isPlaying ? "stop.circle.fill" : "play.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(isPlaying ? Color.accentColor : Color.secondary)
+            }
+            .buttonStyle(.plain)
+
+            Button(action: onSelect) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: 6) {
+                            Text(track.displayName)
+                                .font(.body.weight(isSelected ? .semibold : .regular))
+                                .foregroundStyle(.primary)
+                            if isRecommended {
+                                Text("추천")
+                                    .font(.caption2.weight(.bold))
+                                    .foregroundStyle(Color.accentColor)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(Color.accentColor.opacity(0.12), in: Capsule())
+                            }
+                        }
+                        Text(track.moodTag)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    if isSelected {
+                        Image(systemName: "checkmark")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.accentColor)
+                    }
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
         }
-        .frame(maxWidth: .infinity)
-        .aspectRatio(4.0 / 3.0, contentMode: .fit)
-        .background(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(Color.secondary.opacity(0.08))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .strokeBorder(Color.secondary.opacity(0.24), style: StrokeStyle(lineWidth: 1.2, dash: [6, 5]))
-                )
-        )
+        .padding(.vertical, 2)
     }
 }
 
@@ -542,7 +659,10 @@ private struct ExhibitionViewerScreen: View {
     @State private var isSyncingFields = false
     @State private var debounceTask: Task<Void, Never>?
 
-    // Toast & Haptics
+    // Toast, BGM & Haptics
+    @State private var bgmPreviewPlayer = BGMPreviewPlayer()
+    @State private var moodRecommendation: MoodBGMRecommendation?
+    @State private var activeBGMTrack: ExhibitionBGMTrack?
     @State private var toastMessage: String?
     @State private var isToastError = false
     @State private var toastTask: Task<Void, Never>?
@@ -558,7 +678,7 @@ private struct ExhibitionViewerScreen: View {
                         revision: store.previewRevision,
                         controller: webController
                     )
-                    .ignoresSafeArea(edges: .bottom)
+                    .ignoresSafeArea()
                 } else {
                     ProgressView("전시를 준비하는 중…")
                 }
@@ -599,6 +719,7 @@ private struct ExhibitionViewerScreen: View {
         .navigationTitle(store.manifest?.title ?? entry.title)
         #if !os(macOS)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(viewerMode == .exhibition ? .hidden : .automatic, for: .navigationBar)
         #endif
         .sensoryFeedback(.selection, trigger: hapticTick)
         .inspector(isPresented: $showInspector) {
@@ -613,20 +734,19 @@ private struct ExhibitionViewerScreen: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 150)
+                .frame(width: 144)
             }
 
             ToolbarItemGroup(placement: .primaryAction) {
-                Button {
+                Button("편집") {
                     hapticTick += 1
                     if horizontalSizeClass == .compact {
                         showMobileEditorSheet.toggle()
                     } else {
                         showInspector.toggle()
                     }
-                } label: {
-                    Label("편집", systemImage: "slider.horizontal.3")
                 }
+                .fontWeight(.medium)
 
                 Button {
                     openShareSheet()
@@ -684,6 +804,17 @@ private struct ExhibitionViewerScreen: View {
                 store.loadPackage(at: entry.url)
             }
             syncInspectorFields()
+            refreshMoodBGMRecommendation()
+            if CommandLine.arguments.contains("--open-editor") {
+                if horizontalSizeClass == .compact {
+                    showMobileEditorSheet = true
+                } else {
+                    showInspector = true
+                }
+            }
+        }
+        .onDisappear {
+            bgmPreviewPlayer.stop()
         }
         .onChange(of: store.selectedSceneID) { _, newID in
             syncInspectorFields()
@@ -870,7 +1001,59 @@ private struct ExhibitionViewerScreen: View {
                 }
             }
 
-            // 4. Save
+            // 4. Mood-Based BGM Recommendation & Picker
+            Section {
+                ForEach(ExhibitionBGMTrack.allCases) { track in
+                    BGMSelectionRow(
+                        track: track,
+                        isSelected: activeBGMTrack == track,
+                        isRecommended: moodRecommendation?.track == track,
+                        isPlaying: bgmPreviewPlayer.playingTrack == track,
+                        onSelect: {
+                            activeBGMTrack = track
+                            store.applyExhibitionBGM(fileURL: track.fileURL)
+                            hapticTick += 1
+                            showToast("'\(track.displayName)' 배경음악 적용됨")
+                        },
+                        onTogglePreview: {
+                            bgmPreviewPlayer.togglePreview(track)
+                        }
+                    )
+                }
+
+                Button {
+                    activeBGMTrack = nil
+                    bgmPreviewPlayer.stop()
+                    store.applyExhibitionBGM(fileURL: nil)
+                    hapticTick += 1
+                    showToast("배경음악을 껐어요")
+                } label: {
+                    HStack {
+                        Image(systemName: "speaker.slash")
+                            .foregroundStyle(.secondary)
+                            .frame(width: 24)
+                        Text("배경음악 없음")
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        if activeBGMTrack == nil {
+                            Image(systemName: "checkmark")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(Color.accentColor)
+                        }
+                    }
+                }
+                .buttonStyle(.plain)
+            } header: {
+                Text("배경음악")
+            } footer: {
+                if let rec = moodRecommendation {
+                    Text("사진 분위기 추천: \(rec.track.displayName) — \(rec.reason)")
+                } else {
+                    Text("재생 버튼을 눌러 미리 듣고 전시에 어울리는 배경음악을 선택하세요.")
+                }
+            }
+
+            // 5. Save
             Section {
                 Button {
                     store.saveToCloudPackage()
@@ -878,8 +1061,10 @@ private struct ExhibitionViewerScreen: View {
                     hapticTick += 1
                     showToast(store.errorMessage ?? "전시 프로젝트를 저장했어요", isError: store.errorMessage != nil)
                 } label: {
-                    Label(store.isICloudAvailable ? "iCloud에 저장" : "전시 프로젝트 저장", systemImage: "square.and.arrow.down")
+                    Label(store.isICloudAvailable ? "iCloud에 사본 저장" : "전시 프로젝트 저장", systemImage: "square.and.arrow.down")
                 }
+            } footer: {
+                Text("내 전시의 모든 변경 사항은 자동으로 저장됩니다.")
             }
         }
         .formStyle(.grouped)
@@ -1025,6 +1210,18 @@ private struct ExhibitionViewerScreen: View {
             showToast("사진 \(added)장을 추가했어요")
         } else {
             showToast(store.errorMessage ?? "사진을 추가하지 못했어요", isError: true)
+        }
+    }
+
+    private func refreshMoodBGMRecommendation() {
+        let urls = collectProjectImages()
+        moodRecommendation = MoodAudioAdvisor.recommend(from: urls)
+        // Detect if an existing scene already uses one of our curated tracks
+        if let firstAudio = store.manifest?.scenes.compactMap(\.audioTrack).first {
+            let base = URL(fileURLWithPath: firstAudio).deletingPathExtension().lastPathComponent
+            activeBGMTrack = ExhibitionBGMTrack(rawValue: base)
+        } else {
+            activeBGMTrack = nil
         }
     }
 

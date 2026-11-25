@@ -13,10 +13,14 @@
 		3F66CD59BE9E7BC30D07F0D5 /* ExhibitionWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */; };
 		48314C5D70E6560C02E2B9E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */; };
 		60440847ED6284406AAD74C2 /* DigitalGalleryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787D2E408D603A88F8A84C86 /* DigitalGalleryApp.swift */; };
+		6CA8FA7A988CC3ED43010441 /* MoodAudioAdvisor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF353605CB000BC84729FA08 /* MoodAudioAdvisor.swift */; };
+		711C1624B67FC00FFEA3E7AE /* Audio in Resources */ = {isa = PBXBuildFile; fileRef = 24EF8FD874088CE4480DEF57 /* Audio */; };
 		788F521F1CD25ECF4A5D5551 /* GalleryBridge in Frameworks */ = {isa = PBXBuildFile; productRef = 124C9C5BBAD44830DC1F074D /* GalleryBridge */; };
+		87E3393DD5CB05967987A27F /* MoodAudioAdvisor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF353605CB000BC84729FA08 /* MoodAudioAdvisor.swift */; };
 		9AC15ECE15AE6D5B7EDA5496 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BCDF3F37FEF8C949291B73 /* ContentView.swift */; };
 		B061E95B0B56B6738D2CE6E8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */; };
 		C7ACC21694B0DF54D5207983 /* MemoriaDesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A573F7F01857095BD6E236 /* MemoriaDesignSystem.swift */; };
+		D5A5490934A6A9D18892A1A5 /* Audio in Resources */ = {isa = PBXBuildFile; fileRef = 24EF8FD874088CE4480DEF57 /* Audio */; };
 		DB36AAB5E212E3D64F4C3D77 /* Rainy_Fukuoka.gallery in Resources */ = {isa = PBXBuildFile; fileRef = 3A742BD18BCC825C0A2D5294 /* Rainy_Fukuoka.gallery */; };
 		E6483AE54D78FC656081A994 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */; };
 		E7DC901E275AED04DD8ABB1C /* Rainy_Fukuoka.gallery in Resources */ = {isa = PBXBuildFile; fileRef = 3A742BD18BCC825C0A2D5294 /* Rainy_Fukuoka.gallery */; };
@@ -28,12 +32,14 @@
 /* Begin PBXFileReference section */
 		17BCDF3F37FEF8C949291B73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionWebView.swift; sourceTree = "<group>"; };
+		24EF8FD874088CE4480DEF57 /* Audio */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Audio; path = Resources/Audio; sourceTree = SOURCE_ROOT; };
 		32A573F7F01857095BD6E236 /* MemoriaDesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoriaDesignSystem.swift; sourceTree = "<group>"; };
 		3A742BD18BCC825C0A2D5294 /* Rainy_Fukuoka.gallery */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Rainy_Fukuoka.gallery; path = ../../demo/Rainy_Fukuoka.gallery; sourceTree = SOURCE_ROOT; };
 		4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		787D2E408D603A88F8A84C86 /* DigitalGalleryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalGalleryApp.swift; sourceTree = "<group>"; };
 		A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C03DC59C0B027CFD943E8F20 /* DigitalGallery-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DigitalGallery-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF353605CB000BC84729FA08 /* MoodAudioAdvisor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodAudioAdvisor.swift; sourceTree = "<group>"; };
 		D8933E62202F218F76236E4E /* DigitalGallery-iPadOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "DigitalGallery-iPadOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDAAFCEEF0B9F4B2D7C3AEB9 /* apple */ = {isa = PBXFileReference; lastKnownFileType = folder; name = apple; path = ../apple; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -105,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */,
+				24EF8FD874088CE4480DEF57 /* Audio */,
 				A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
@@ -117,6 +124,7 @@
 				787D2E408D603A88F8A84C86 /* DigitalGalleryApp.swift */,
 				1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */,
 				32A573F7F01857095BD6E236 /* MemoriaDesignSystem.swift */,
+				CF353605CB000BC84729FA08 /* MoodAudioAdvisor.swift */,
 			);
 			path = DigitalGalleryApp;
 			sourceTree = "<group>";
@@ -231,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48314C5D70E6560C02E2B9E9 /* Assets.xcassets in Resources */,
+				711C1624B67FC00FFEA3E7AE /* Audio in Resources */,
 				E6483AE54D78FC656081A994 /* PrivacyInfo.xcprivacy in Resources */,
 				E7DC901E275AED04DD8ABB1C /* Rainy_Fukuoka.gallery in Resources */,
 			);
@@ -241,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				246BC226188AE6CACF1698DA /* Assets.xcassets in Resources */,
+				D5A5490934A6A9D18892A1A5 /* Audio in Resources */,
 				B061E95B0B56B6738D2CE6E8 /* PrivacyInfo.xcprivacy in Resources */,
 				DB36AAB5E212E3D64F4C3D77 /* Rainy_Fukuoka.gallery in Resources */,
 			);
@@ -257,6 +267,7 @@
 				60440847ED6284406AAD74C2 /* DigitalGalleryApp.swift in Sources */,
 				3F66CD59BE9E7BC30D07F0D5 /* ExhibitionWebView.swift in Sources */,
 				C7ACC21694B0DF54D5207983 /* MemoriaDesignSystem.swift in Sources */,
+				6CA8FA7A988CC3ED43010441 /* MoodAudioAdvisor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +279,7 @@
 				F2211D244090CB2FED9ADBAA /* DigitalGalleryApp.swift in Sources */,
 				28DD18C8D7A9704C615F55D0 /* ExhibitionWebView.swift in Sources */,
 				EDD15DD1D03ACCAAF20E3754 /* MemoriaDesignSystem.swift in Sources */,
+				87E3393DD5CB05967987A27F /* MoodAudioAdvisor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,7 +357,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -407,7 +419,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;

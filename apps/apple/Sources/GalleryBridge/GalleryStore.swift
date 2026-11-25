@@ -237,6 +237,7 @@ public final class GalleryStore {
             let updated = try updateThemePreset(json: current.rawJson, themePreset: preset.rawValue)
             self.manifest = updated
             self.statusMessage = "디자인 시안 변경: \(preset.displayName)"
+            autoSaveIfWritable()
             liveCallbacks.onPatchTheme?(preset.rawValue)
         } catch {
             self.errorMessage = "테마 변경 실패: \(error.localizedDescription)"
@@ -255,6 +256,7 @@ public final class GalleryStore {
             )
             self.manifest = updated
             self.statusMessage = "조명 변경: \(preset.displayName)"
+            autoSaveIfWritable()
 
             // Zero-reload live CSS variable patch in WKWebView
             if let palette = try? resolveMoodPalette(moodPreset: preset.rawValue) {
@@ -289,6 +291,7 @@ public final class GalleryStore {
             )
             self.manifest = updated
             self.statusMessage = "실시간 반영됨"
+            autoSaveIfWritable()
             liveCallbacks.onPatchText?(sceneID, title, chapterLabel, subtitleOrNote, caption)
         } catch {
             self.errorMessage = "텍스트 수정 실패: \(error.localizedDescription)"
@@ -343,7 +346,8 @@ public final class GalleryStore {
     public func createNewExhibition(
         title: String,
         subtitle: String,
-        photos: [(Data, String)]
+        photos: [(Data, String)],
+        bgmFileURL: URL? = nil
     ) -> Bool {
         guard !photos.isEmpty else {
             self.errorMessage = "새 전시를 만들려면 사진을 1장 이상 선택해 주세요."
@@ -355,7 +359,7 @@ public final class GalleryStore {
         let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
         let finalTitle = trimmedTitle.isEmpty ? "나의 새로운 전시" : trimmedTitle
         let trimmedSub = subtitle.trimmingCharacters(in: .whitespacesAndNewlines)
-        let finalSub = trimmedSub.isEmpty ? "Our Special Moments" : trimmedSub
+        let finalSub = trimmedSub.isEmpty ? "Curated Moments" : trimmedSub
 
         let sanitized = finalTitle
             .replacingOccurrences(of: "/", with: "-")
@@ -377,10 +381,24 @@ public final class GalleryStore {
                 subtitle: finalSub,
                 gapHours: 4
             )
-            let styled = try updateThemePreset(
+            var styled = try updateThemePreset(
                 json: scanned.rawJson,
                 themePreset: ExhibitionThemePreset.editorialGallery.rawValue
             )
+
+            // Attach recommended/selected BGM across all exhibition scenes if chosen
+            if let bgmFileURL {
+                let relAudio = try copyMediaIntoProject(fileURL: bgmFileURL, subdir: "audio", sourceRoot: pkgURL)
+                for scene in styled.scenes {
+                    styled = try setSceneAudio(
+                        json: styled.rawJson,
+                        sceneId: scene.id,
+                        audioTrack: relAudio,
+                        volume: 0.45
+                    )
+                }
+            }
+
             try styled.rawJson.write(
                 to: pkgURL.appendingPathComponent("manifest.json"),
                 atomically: true,
@@ -399,6 +417,48 @@ public final class GalleryStore {
         } catch {
             self.errorMessage = "새 전시 생성 실패: \(error.localizedDescription)"
             return false
+        }
+    }
+
+    /// Applies (or clears) a single ambient BGM track across all scenes in the current exhibition.
+    public func applyExhibitionBGM(fileURL: URL?, volume: Float = 0.45) {
+        guard var current = manifest, let sourceRoot = sourceRootURL else { return }
+        clearError()
+        pushUndoSnapshot()
+        do {
+            let relAudio: String?
+            if let fileURL {
+                relAudio = try copyMediaIntoProject(fileURL: fileURL, subdir: "audio", sourceRoot: sourceRoot)
+            } else {
+                relAudio = nil
+            }
+            for scene in current.scenes {
+                current = try setSceneAudio(
+                    json: current.rawJson,
+                    sceneId: scene.id,
+                    audioTrack: relAudio,
+                    volume: volume
+                )
+            }
+            self.manifest = current
+            self.statusMessage = fileURL != nil ? "배경음악 적용됨" : "배경음악 꺼짐"
+            autoSaveIfWritable()
+            refreshLivePreview()
+        } catch {
+            self.errorMessage = "배경음악 변경 실패: \(error.localizedDescription)"
+        }
+    }
+
+    /// Automatically persists `manifest.json` when editing a writable user `.gallery` package.
+    public func autoSaveIfWritable() {
+        guard let current = manifest, let root = sourceRootURL else { return }
+        // Do not attempt to overwrite read-only app bundle sample resources
+        if root.path.hasPrefix(Bundle.main.bundlePath) {
+            return
+        }
+        let manifestURL = root.appendingPathComponent("manifest.json")
+        if FileManager.default.isWritableFile(atPath: root.path) {
+            try? current.rawJson.write(to: manifestURL, atomically: true, encoding: .utf8)
         }
     }
 
@@ -438,6 +498,7 @@ public final class GalleryStore {
                 self.selectedSceneID = current.scenes[current.scenes.count - 2].id
             }
             self.statusMessage = "사진 \(addedCount)장을 전시에 추가했어요"
+            autoSaveIfWritable()
             refreshLivePreview()
         } catch {
             self.errorMessage = "사진 가져오기 실패: \(error.localizedDescription)"
@@ -524,6 +585,7 @@ public final class GalleryStore {
             self.manifest = updated
             self.selectedSceneID = updated.scenes.first?.id
             self.statusMessage = "씬 삭제 완료"
+            autoSaveIfWritable()
             refreshLivePreview()
         } catch {
             self.errorMessage = "씬 삭제 실패: \(error.localizedDescription)"
