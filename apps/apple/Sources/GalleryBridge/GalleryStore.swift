@@ -102,6 +102,11 @@ public final class GalleryStore {
         self.savedPackages = cloudService.listPackages()
     }
 
+    public func deleteSavedPackage(at url: URL) {
+        try? FileManager.default.removeItem(at: url)
+        refreshCloudPackages()
+    }
+
     public func selectScene(_ sceneID: String?) {
         self.selectedSceneID = sceneID
         if let sceneID {
@@ -374,7 +379,7 @@ public final class GalleryStore {
             )
             let styled = try updateThemePreset(
                 json: scanned.rawJson,
-                themePreset: ExhibitionThemePreset.memoriaPastel.rawValue
+                themePreset: ExhibitionThemePreset.editorialGallery.rawValue
             )
             try styled.rawJson.write(
                 to: pkgURL.appendingPathComponent("manifest.json"),

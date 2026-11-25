@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		121B75697112881195F7AA70 /* Our_Wedding_2027.gallery in Resources */ = {isa = PBXBuildFile; fileRef = 0F921E1AA8AD7EC77615AC43 /* Our_Wedding_2027.gallery */; };
 		213938BABD1510C67BE7322B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BCDF3F37FEF8C949291B73 /* ContentView.swift */; };
 		246BC226188AE6CACF1698DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D68FBD9D9AA2CCBE4757CE4 /* Assets.xcassets */; };
 		28DD18C8D7A9704C615F55D0 /* ExhibitionWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */; };
@@ -18,6 +17,7 @@
 		9AC15ECE15AE6D5B7EDA5496 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BCDF3F37FEF8C949291B73 /* ContentView.swift */; };
 		B061E95B0B56B6738D2CE6E8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */; };
 		C7ACC21694B0DF54D5207983 /* MemoriaDesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A573F7F01857095BD6E236 /* MemoriaDesignSystem.swift */; };
+		DB36AAB5E212E3D64F4C3D77 /* Rainy_Fukuoka.gallery in Resources */ = {isa = PBXBuildFile; fileRef = 3A742BD18BCC825C0A2D5294 /* Rainy_Fukuoka.gallery */; };
 		E6483AE54D78FC656081A994 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A4953852C06173BDE22F85B0 /* PrivacyInfo.xcprivacy */; };
 		E7DC901E275AED04DD8ABB1C /* Rainy_Fukuoka.gallery in Resources */ = {isa = PBXBuildFile; fileRef = 3A742BD18BCC825C0A2D5294 /* Rainy_Fukuoka.gallery */; };
 		EDD15DD1D03ACCAAF20E3754 /* MemoriaDesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A573F7F01857095BD6E236 /* MemoriaDesignSystem.swift */; };
@@ -26,7 +26,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0F921E1AA8AD7EC77615AC43 /* Our_Wedding_2027.gallery */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Our_Wedding_2027.gallery; path = ../../demo/Our_Wedding_2027.gallery; sourceTree = SOURCE_ROOT; };
 		17BCDF3F37FEF8C949291B73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1DD83858F0032B08A948D78E /* ExhibitionWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionWebView.swift; sourceTree = "<group>"; };
 		32A573F7F01857095BD6E236 /* MemoriaDesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoriaDesignSystem.swift; sourceTree = "<group>"; };
@@ -88,7 +87,6 @@
 		5B7154F3B780034A91EACB4D /* demo */ = {
 			isa = PBXGroup;
 			children = (
-				0F921E1AA8AD7EC77615AC43 /* Our_Wedding_2027.gallery */,
 				3A742BD18BCC825C0A2D5294 /* Rainy_Fukuoka.gallery */,
 			);
 			path = demo;
@@ -233,7 +231,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				48314C5D70E6560C02E2B9E9 /* Assets.xcassets in Resources */,
-				121B75697112881195F7AA70 /* Our_Wedding_2027.gallery in Resources */,
 				E6483AE54D78FC656081A994 /* PrivacyInfo.xcprivacy in Resources */,
 				E7DC901E275AED04DD8ABB1C /* Rainy_Fukuoka.gallery in Resources */,
 			);
@@ -245,6 +242,7 @@
 			files = (
 				246BC226188AE6CACF1698DA /* Assets.xcassets in Resources */,
 				B061E95B0B56B6738D2CE6E8 /* PrivacyInfo.xcprivacy in Resources */,
+				DB36AAB5E212E3D64F4C3D77 /* Rainy_Fukuoka.gallery in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +345,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -409,7 +407,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
