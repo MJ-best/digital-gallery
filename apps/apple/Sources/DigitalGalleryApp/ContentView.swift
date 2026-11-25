@@ -58,10 +58,20 @@ struct ContentView: View {
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        Text("사진으로 만드는 나만의 디지털 전시")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .padding(.horizontal, 4)
+                        HStack(spacing: 12) {
+                            MemoriaLogoMark(size: 40)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Memoria")
+                                    .font(.title.bold())
+                                    .foregroundStyle(.primary)
+                                Text("사진으로 만드는 나만의 디지털 전시")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                        }
+                        .padding(.horizontal, 4)
+                        .padding(.top, 4)
 
                         LazyVGrid(columns: gridColumns, spacing: 20) {
                             ForEach(libraryEntries) { entry in
@@ -102,9 +112,9 @@ struct ContentView: View {
 
                 toastOverlay
             }
-            .navigationTitle("전시관")
+            .navigationTitle("Memoria")
             #if !os(macOS)
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
