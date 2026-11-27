@@ -23,6 +23,75 @@ enum ViewerMode: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
+/// Safely loads image files (and images inside selected folders) from Files app / Finder URLs.
+enum FileImageLoader {
+    private static let supportedExtensions: Set<String> = [
+        "jpg", "jpeg", "png", "heic", "heif", "webp", "tif", "tiff"
+    ]
+
+    static func loadImages(from urls: [URL], maxCount: Int = 50) -> [(Data, String)] {
+        var results: [(Data, String)] = []
+        let fm = FileManager.default
+        let stamp = Int(Date().timeIntervalSince1970)
+
+        for url in urls {
+            guard results.count < maxCount else { break }
+            let didAccess = url.startAccessingSecurityScopedResource()
+            defer {
+                if didAccess { url.stopAccessingSecurityScopedResource() }
+            }
+
+            let isDir = (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
+            if isDir {
+                if let enumerator = fm.enumerator(
+                    at: url,
+                    includingPropertiesForKeys: [.isRegularFileKey],
+                    options: [.skipsHiddenFiles]
+                ) {
+                    var fileURLs: [URL] = []
+                    for case let child as URL in enumerator {
+                        if supportedExtensions.contains(child.pathExtension.lowercased()) {
+                            fileURLs.append(child)
+                        }
+                    }
+                    fileURLs.sort { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
+                    for child in fileURLs {
+                        guard results.count < maxCount else { break }
+                        if let data = try? Data(contentsOf: child) {
+                            let safeName = sanitizedFilename(child.lastPathComponent, index: results.count + 1, stamp: stamp)
+                            results.append((data, safeName))
+                        }
+                    }
+                }
+            } else {
+                if supportedExtensions.contains(url.pathExtension.lowercased()) || isImageUTType(url) {
+                    if let data = try? Data(contentsOf: url) {
+                        let safeName = sanitizedFilename(url.lastPathComponent, index: results.count + 1, stamp: stamp)
+                        results.append((data, safeName))
+                    }
+                }
+            }
+        }
+        return results
+    }
+
+    private static func isImageUTType(_ url: URL) -> Bool {
+        guard let type = UTType(filenameExtension: url.pathExtension) else { return false }
+        return type.conforms(to: .image)
+    }
+
+    private static func sanitizedFilename(_ raw: String, index: Int, stamp: Int) -> String {
+        let cleaned = raw
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: ":", with: "_")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        if cleaned.isEmpty {
+            return "file_\(stamp)_\(index).jpg"
+        }
+        return String(format: "%02d_%@", index, cleaned)
+    }
+}
+
 // MARK: - Root View: Apple Photos–Style Exhibition Library
 struct ContentView: View {
     @State private var store = GalleryStore()
@@ -35,11 +104,17 @@ struct ContentView: View {
     @State private var newTitle = ""
     @State private var newSubtitle = ""
     @State private var newPickedItems: [PhotosPickerItem] = []
-    @State private var newLoadedPhotos: [(Data, String)] = []
+    @State private var newLibraryPhotos: [(Data, String)] = []
+    @State private var newFilePhotos: [(Data, String)] = []
+    @State private var showNewFileImporter = false
     @State private var isAnalyzingNewPhotos = false
     @State private var newRecommendedBGM: MoodBGMRecommendation?
     @State private var selectedNewBGM: ExhibitionBGMTrack? = .morningLight
     @State private var bgmPreviewPlayer = BGMPreviewPlayer()
+
+    private var combinedNewPhotos: [(Data, String)] {
+        newLibraryPhotos + newFilePhotos
+    }
 
     // Toast feedback
     @State private var toastMessage: String?
@@ -161,11 +236,11 @@ struct ContentView: View {
                         matching: .images
                     ) {
                         HStack(spacing: 12) {
-                            Image(systemName: newPickedItems.isEmpty ? "photo.on.rectangle.angled" : "checkmark.circle.fill")
+                            Image(systemName: newLibraryPhotos.isEmpty ? "photo.on.rectangle.angled" : "checkmark.circle.fill")
                                 .font(.title3)
-                                .foregroundStyle(newPickedItems.isEmpty ? Color.accentColor : Color.green)
+                                .foregroundStyle(newLibraryPhotos.isEmpty ? Color.accentColor : Color.green)
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(newPickedItems.isEmpty ? "사진 보관함에서 고르기" : "\(newPickedItems.count)장 선택됨")
+                                Text(newLibraryPhotos.isEmpty ? "사진 보관함에서 고르기" : "사진 보관함에서 \(newLibraryPhotos.count)장 선택됨")
                                     .font(.body.weight(.medium))
                                     .foregroundStyle(.primary)
                                 Text("최대 30장 · 촬영 순서에 맞춰 자동 구성됩니다")
@@ -180,14 +255,46 @@ struct ContentView: View {
                         .padding(.vertical, 4)
                     }
 
-                    #if os(macOS)
                     Button {
-                        showNewExhibitionSheet = false
-                        pickFolderToCreateExhibition()
+                        showNewFileImporter = true
                     } label: {
-                        Label("Mac 사진 폴더에서 바로 만들기…", systemImage: "folder")
+                        HStack(spacing: 12) {
+                            Image(systemName: newFilePhotos.isEmpty ? "folder.badge.plus" : "checkmark.circle.fill")
+                                .font(.title3)
+                                .foregroundStyle(newFilePhotos.isEmpty ? Color.accentColor : Color.green)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(newFilePhotos.isEmpty ? "파일에서 사진·폴더 고르기" : "파일에서 \(newFilePhotos.count)장 선택됨")
+                                    .font(.body.weight(.medium))
+                                    .foregroundStyle(.primary)
+                                Text("iCloud Drive · 다운로드 · 공유받은 사진 폴더 지원")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(.tertiary)
+                        }
+                        .padding(.vertical, 4)
+                        .contentShape(Rectangle())
                     }
-                    #endif
+                    .buttonStyle(.plain)
+
+                    if !combinedNewPhotos.isEmpty {
+                        HStack {
+                            Text("총 \(combinedNewPhotos.count)장 준비됨")
+                                .font(.footnote.weight(.semibold))
+                                .foregroundStyle(Color.accentColor)
+                            Spacer()
+                            Button("선택 초기화", role: .destructive) {
+                                newPickedItems = []
+                                newLibraryPhotos = []
+                                newFilePhotos = []
+                                newRecommendedBGM = nil
+                            }
+                            .font(.footnote)
+                        }
+                    }
                 } header: {
                     Text("사진")
                 }
@@ -261,6 +368,20 @@ struct ContentView: View {
                     await analyzeNewPickedPhotos(items)
                 }
             }
+            .fileImporter(
+                isPresented: $showNewFileImporter,
+                allowedContentTypes: [.image, .folder],
+                allowsMultipleSelection: true
+            ) { result in
+                switch result {
+                case .success(let urls):
+                    Task {
+                        await loadNewPhotosFromFiles(urls)
+                    }
+                case .failure(let error):
+                    showToast("파일을 열지 못했어요: \(error.localizedDescription)", isError: true)
+                }
+            }
             .onDisappear {
                 bgmPreviewPlayer.stop()
             }
@@ -274,14 +395,15 @@ struct ContentView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("만들기") {
                         bgmPreviewPlayer.stop()
-                        let preloaded = newLoadedPhotos
+                        let preloaded = combinedNewPhotos
                         let items = newPickedItems
                         let title = newTitle
                         let subtitle = newSubtitle
                         let chosenBGM = selectedNewBGM?.fileURL
                         showNewExhibitionSheet = false
                         newPickedItems = []
-                        newLoadedPhotos = []
+                        newLibraryPhotos = []
+                        newFilePhotos = []
                         newTitle = ""
                         newSubtitle = ""
                         newRecommendedBGM = nil
@@ -296,7 +418,7 @@ struct ContentView: View {
                         }
                     }
                     .fontWeight(.semibold)
-                    .disabled(newPickedItems.isEmpty || isAnalyzingNewPhotos)
+                    .disabled(combinedNewPhotos.isEmpty || isAnalyzingNewPhotos)
                 }
             }
         }
@@ -381,11 +503,6 @@ struct ContentView: View {
     }
 
     private func analyzeNewPickedPhotos(_ items: [PhotosPickerItem]) async {
-        guard !items.isEmpty else {
-            newLoadedPhotos = []
-            newRecommendedBGM = nil
-            return
-        }
         isAnalyzingNewPhotos = true
         var loaded: [(Data, String)] = []
         let stamp = Int(Date().timeIntervalSince1970)
@@ -394,11 +511,42 @@ struct ContentView: View {
                 loaded.append((data, "photo_\(stamp)_\(idx + 1).jpg"))
             }
         }
-        newLoadedPhotos = loaded
-        let rec = MoodAudioAdvisor.recommend(from: loaded.map(\.0))
+        newLibraryPhotos = loaded
+        updateNewExhibitionBGMRecommendation()
+        isAnalyzingNewPhotos = false
+    }
+
+    private func loadNewPhotosFromFiles(_ urls: [URL]) async {
+        isAnalyzingNewPhotos = true
+        let loaded = await Task.detached(priority: .userInitiated) {
+            FileImageLoader.loadImages(from: urls, maxCount: 50)
+        }.value
+        if loaded.isEmpty {
+            showToast("선택한 파일에서 이미지를 찾지 못했어요", isError: true)
+        } else {
+            newFilePhotos.append(contentsOf: loaded)
+            // If title is empty and user selected a single folder, suggest folder name as title
+            if newTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+               urls.count == 1,
+               ((try? urls[0].resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false) {
+                newTitle = urls[0].lastPathComponent
+                    .replacingOccurrences(of: "_", with: " ")
+                    .replacingOccurrences(of: "-", with: " ")
+            }
+            updateNewExhibitionBGMRecommendation()
+        }
+        isAnalyzingNewPhotos = false
+    }
+
+    private func updateNewExhibitionBGMRecommendation() {
+        let all = combinedNewPhotos
+        guard !all.isEmpty else {
+            newRecommendedBGM = nil
+            return
+        }
+        let rec = MoodAudioAdvisor.recommend(from: all.map(\.0))
         newRecommendedBGM = rec
         selectedNewBGM = rec.track
-        isAnalyzingNewPhotos = false
     }
 
     private func createAndOpenExhibition(
@@ -660,6 +808,8 @@ private struct ExhibitionViewerScreen: View {
     @State private var isExporting = false
     @State private var isImporting = false
     @State private var pickedPhotoItems: [PhotosPickerItem] = []
+    @State private var showViewerFileImporter = false
+    @State private var showSheetFileImporter = false
 
     // Live editor fields
     @State private var editTitle = ""
@@ -804,9 +954,23 @@ private struct ExhibitionViewerScreen: View {
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
             .presentationBackgroundInteraction(.enabled(upThrough: .medium))
+            .fileImporter(
+                isPresented: $showSheetFileImporter,
+                allowedContentTypes: [.image, .folder],
+                allowsMultipleSelection: true
+            ) { result in
+                handleFileImporterResult(result)
+            }
         }
         .sheet(isPresented: $showShareSheet) {
             nativeShareModalSheet
+        }
+        .fileImporter(
+            isPresented: $showViewerFileImporter,
+            allowedContentTypes: [.image, .folder],
+            allowsMultipleSelection: true
+        ) { result in
+            handleFileImporterResult(result)
         }
         .onAppear {
             wireLiveBridge()
@@ -858,13 +1022,22 @@ private struct ExhibitionViewerScreen: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    PhotosPicker(
-                        selection: $pickedPhotoItems,
-                        maxSelectionCount: 30,
-                        matching: .images
-                    ) {
-                        Label("사진 추가", systemImage: "plus")
-                            .font(.subheadline.weight(.semibold))
+                    HStack(spacing: 14) {
+                        PhotosPicker(
+                            selection: $pickedPhotoItems,
+                            maxSelectionCount: 30,
+                            matching: .images
+                        ) {
+                            Label("보관함", systemImage: "photo.badge.plus")
+                                .font(.subheadline.weight(.semibold))
+                        }
+
+                        Button {
+                            showViewerFileImporter = true
+                        } label: {
+                            Label("파일", systemImage: "folder.badge.plus")
+                                .font(.subheadline.weight(.semibold))
+                        }
                     }
                 }
                 .padding(.horizontal, 16)
@@ -965,7 +1138,17 @@ private struct ExhibitionViewerScreen: View {
                         maxSelectionCount: 30,
                         matching: .images
                     ) {
-                        Label("사진 여러 장 추가 (최대 30장)", systemImage: "photo.badge.plus")
+                        Label("사진 보관함에서 추가 (최대 30장)", systemImage: "photo.badge.plus")
+                    }
+
+                    Button {
+                        if showMobileEditorSheet {
+                            showSheetFileImporter = true
+                        } else {
+                            showViewerFileImporter = true
+                        }
+                    } label: {
+                        Label("파일에서 사진·폴더 추가", systemImage: "folder.badge.plus")
                     }
                 }
             }
@@ -1217,9 +1400,37 @@ private struct ExhibitionViewerScreen: View {
         isImporting = false
         hapticTick += 1
         if added > 0 {
+            refreshMoodBGMRecommendation()
             showToast("사진 \(added)장을 추가했어요")
         } else {
             showToast(store.errorMessage ?? "사진을 추가하지 못했어요", isError: true)
+        }
+    }
+
+    private func handleFileImporterResult(_ result: Result<[URL], Error>) {
+        switch result {
+        case .success(let urls):
+            Task {
+                await importPhotosFromFiles(urls)
+            }
+        case .failure(let error):
+            showToast("파일을 열지 못했어요: \(error.localizedDescription)", isError: true)
+        }
+    }
+
+    private func importPhotosFromFiles(_ urls: [URL]) async {
+        isImporting = true
+        let loaded = await Task.detached(priority: .userInitiated) {
+            FileImageLoader.loadImages(from: urls, maxCount: 50)
+        }.value
+        let added = store.importMultiplePhotoData(loaded)
+        isImporting = false
+        hapticTick += 1
+        if added > 0 {
+            refreshMoodBGMRecommendation()
+            showToast("파일에서 사진 \(added)장을 추가했어요")
+        } else {
+            showToast("선택한 파일에서 이미지를 찾지 못했어요", isError: true)
         }
     }
 
